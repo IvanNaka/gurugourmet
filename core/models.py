@@ -6,11 +6,22 @@ class Usuario(models.Model):
     username = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
     senha = models.CharField()
+
+class Endereco(models.Model):
+    rua = models.CharField(max_length=255)
+    bairro = models.CharField(max_length=255)
+    numero = models.IntegerField()
+    cidade = models.CharField(max_length=255)
+    estado = models.CharField(max_length=50)
+    cep = models.IntegerField()
+    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+
+
 class Receita(models.Model):
     texto = models.TextField()
     data_criacao = models.DateTimeField()
     status = models.BooleanField()
-    idUsuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
 
 class Ingrediente(models.Model):
     nome = models.CharField(max_length=255)
@@ -23,3 +34,53 @@ class Equipamento(models.Model):
 class Administrador(models.Model):
     username = models.CharField(max_length=100)
     senha = models.CharField()
+class EquipamentoReceita(models.Model):
+    receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
+    equipamento = models.ForeignKey(Equipamento, on_delete=models.DO_NOTHING)
+    quantidade = models.DecimalField(max_digits=20, decimal_places=2)
+
+class IngredienteReceita(models.Model):
+    receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
+    ingrediente = models.ForeignKey(Ingrediente, on_delete=models.DO_NOTHING)
+    quantidade = models.DecimalField(max_digits=20, decimal_places=2)
+    unidadeMedida = models.CharField(max_length=10)
+
+class Imagem(models.Model):
+    status = models.BooleanField()
+    receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
+    path = models.CharField()
+
+class Comentario(models.Model):
+    status = models.BooleanField()
+    receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
+    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    data = models.DateTimeField()
+    texto = models.TextField()
+
+class BanReceita(models.Model):
+    status = models.BooleanField()
+    receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
+    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    data = models.DateTimeField()
+    justificativa = models.TextField()
+
+class BanComentario(models.Model):
+    status = models.BooleanField()
+    comentario = models.ForeignKey(Comentario, on_delete=models.DO_NOTHING)
+    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    data = models.DateTimeField()
+    justificativa = models.TextField()
+
+class BanImagem(models.Model):
+    status = models.BooleanField()
+    imagem = models.ForeignKey(Imagem, on_delete=models.DO_NOTHING)
+    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    data = models.DateTimeField()
+    justificativa = models.TextField()
+
+class BanUsuario(models.Model):
+    status = models.BooleanField()
+    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    data = models.DateTimeField()
+    justificativa = models.TextField()
