@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views import View
+from django.views.generic import TemplateView
 
-# Create your views here.
-def login(request):
-    if request.method == "GET":
-        return render(request, "exemplo.html", {})
-    else:
-        return JsonResponse({'status':True})
+class HomeView(View):
+    def get(self, request, **kwargs):
+        return render(self.request, "index.html")
+
+
+class LoginView(View):
+    def get(self, request, **kwargs):
+        return render(self.request, "login.html")

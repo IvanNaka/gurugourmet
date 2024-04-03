@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GuruGourmet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="./templates/css/styles.css""/>
+</head>
+<body>
+    <!-- nav -->
+    <nav class="navbar">
+        <div class="nav-center">
+            <!-- header -->
+            <div class="nav-header">
+                <a href="index.html" class="nav-logo">
+                    <img src="./assets/logo.svg" alt="GuruGourmet">
+                </a>
+                <button type="button" class="btn nav-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- links -->
+            <div class="nav-links">
+                <a href="index.html" class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link register-link">
+                    <a href="register.html" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- final nav -->
+    <!-- main -->
+    <main class="content">
+        <!-- header -->
+        <header class="hero">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h4>LOGIN</h4>
+                    <div class="form-section">
+                        <div class="form-section-item">
+                            <label for="email">E-mail</label>
+                            <input id="email" type="email" name="email" placeholder="Digite seu e-mail" required>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="form-section-item">
+                            <label for="password">Senha</label>
+                            <input id="password" type="password" name="password" placeholder="Digite aqui..." required>
+                        </div>
+                    </div>
+                    <div class="form-section" id="form-btn">
+                        <form id="login-form" onsubmit="return submitForm(event)">
+                            <button type="submit" class="btn">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>        
+        <!-- final header-->        
+    <!-- footer -->
+    <footer class="content-footer">
+        <p>
+            &copy; <span id="data"></span>
+            <span class="footer-logo">GuruGourmet</span>
+        </p>
+    </footer>
+    <!-- final footer -->
+    <script src="./js/script.js"></script>
+</body>
+</html>

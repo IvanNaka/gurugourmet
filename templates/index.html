@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GuruGourmet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="./templates/css/styles.css"/>
+</head>
+<body>
+    <!-- nav -->
+    <nav class="navbar">
+        <div class="nav-center">
+            <!-- header -->
+            <div class="nav-header">
+                <a href="index.html" class="nav-logo">
+                    <img src="./assets/logo.svg" alt="GuruGourmet">
+                </a>
+                <button type="button" class="btn nav-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- links -->
+            <div class="nav-links">
+                <a href="index.html" class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link register-link">
+                    <a href="register.html" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
+                <div class="nav-link login-link">
+                    <a href="login.html" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- final nav -->
+    <!-- main -->
+    <main class="content">
+        <!-- header -->
+        <header class="hero">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h4>Pesquise receitas por ingredientes</h4>
+                    <input type="text" class="ingredientInput" placeholder="Qual ingrediente você tem em sua disposição?">
+                    <button type="button" class="btn" id="searchButton">Adicionar</button>
+                </div>
+            </div>
+        </header>
+        <!-- final header-->
+        <!-- container receitas -->
+        <section class="receitas-container">
+            <!-- menu container-->
+            <div class="menu-container">
+                <h4>Ingredientes</h4>
+                <div class="menu-lista" id="listaIngredientes">
+                    <!-- A lista de ingredientes vai ser adicionada dinamicamente aqui -->
+                </div>
+            </div>
+            <!-- final menu container-->
+            <!-- lista container -->
+            <div class="lista-container">
+                <!-- receita individual -->
+                <a href="enderecoReceita" class="receita">
+                    <img src="./assets/receitas/receita1.jpg" class="img receita-img" alt="">
+                    <h5>Bobó de Camarão</h5>
+                    <p>Tempo de Preparo: 45min</p>
+                </a>
+                <!-- final receita individual -->
+                <!-- receita individual -->
+                <a href="enderecoReceita" class="receita">
+                    <img src="./assets/receitas/receita2.jpg" class="img receita-img" alt="">
+                    <h5>Farofa de Banana</h5>
+                    <p>Tempo de Preparo: 15min</p>
+                </a>
+                <!-- final receita individual -->
+                <!-- receita individual -->
+                <a href="enderecoReceita" class="receita">
+                    <img src="./assets/receitas/receita3.jpg" class="img receita-img" alt="">
+                    <h5>Strogonoff de Carne</h5>
+                    <p>Tempo de Preparo: 30min</p>
+                </a>
+                <!-- final receita individual -->
+            </div>
+            <!-- final lista container -->
+        </section>
+        <!-- final container receitas -->
+    </main>
+    <!-- final main -->
+    <!-- footer -->
+    <footer class="content-footer">
+        <p>
+            &copy; <span id="data"></span>
+            <span class="footer-logo">GuruGourmet</span>
+        </p>
+    </footer>
+    <!-- final footer -->
+    <script src="./js/script.js"></script>
+</body>
+</html>
