@@ -98,7 +98,25 @@ function login() {
     };
     xhr.send(formData);
 }
-
+function cadastro() {
+    var formData = new FormData();
+    formData.append('email', document.getElementById('email').value);
+    formData.append('password', document.getElementById('password').value);
+    formData.append('username', document.getElementById('username').value);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/cadastro/', true);
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Adicione o token CSRF, necessário para Django
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                location.href = '../';
+            } else {
+                document.getElementById('error-message').innerText = JSON.parse(xhr.response).error;
+            }
+        }
+    };
+    xhr.send(formData);
+}
 
 
 // Função para verificar se o ingrediente está no banco de dados

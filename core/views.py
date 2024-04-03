@@ -11,9 +11,6 @@ class HomeView(View):
     def get(self, request, **kwargs):
         return render(self.request, "index.html")
 
-class LoginForm(forms.Form):
-    email = forms.EmailField()
-    senha = forms.CharField(widget=forms.PasswordInput)
 class LoginView(View):
     def get(self, request, **kwargs):
         return render(self.request, "login.html")
@@ -29,5 +26,12 @@ class CadastroView(View):
     def get(self, request, **kwargs):
         return render(self.request, "register.html")
     def post(self, request, **kwargs):
-
-        return render(self.request, "login.html")
+        email = self.request.POST.get('email')
+        senha = self.request.POST.get('password')
+        username = self.request.POST.get('username')
+        usuarioNovo = Usuario()
+        usuarioNovo.username = username
+        usuarioNovo.senha = senha
+        usuarioNovo.email = email
+        usuarioNovo.save()
+        return JsonResponse({'success': True})

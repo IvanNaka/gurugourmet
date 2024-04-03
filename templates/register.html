@@ -38,43 +38,12 @@
         <header class="hero">
             <div class="hero-container">
                 <div class="hero-text">
-                    <h4>CADASTRO</h4>
-                    <div class="form-section">
-                        <div class="form-section-item">
-                            <label for="firstname">Nome</label>
-                            <input id="firstname" type="text" name="firstname" placeholder="Digite seu nome" required>
-                        </div>
-                        <div class="form-section-item">
-                            <label for="lastname">Sobrenome</label>
-                            <input id="lastname" type="text" name="lastname" placeholder="Digite seu sobrenome" required>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <div class="form-section-item">
-                            <label for="email">E-mail</label>
-                            <input id="email" type="email" name="email" placeholder="Digite seu e-mail" required>
-                        </div>
-                        <div class="form-section-item">
-                            <label for="cellphone">Número do Celular</label>
-                            <input id="cellphone" type="tel" name="cellphone" placeholder="(DDD) xxxxx-xxxx" required>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <div class="form-section-item">
-                            <label for="password">Nova senha</label>
-                            <input id="password" type="password" name="password" placeholder="Digite aqui..." required>
-                        </div>
-                        <div class="form-section-item">
-                            <label for="passwordConfirmation">Confirme a senha</label>
-                            <input id="passwordConfirmation" type="password" name="passwordConfirmation" placeholder="Digite aqui..." required>
-                        </div>
-                    </div>
-                    <div class="form-section" id="form-btn">
-                        <form id="myForm" onsubmit="return submitForm(event)">
-                            <!-- Seus campos de formulário aqui -->
-                            <button class="btn" type="submit">Enviar</button>
-                        </form>
-                    </div>
+                     <h2>Cadastro</h2>
+                    <div id="error-message" style="color: red;"></div> <!-- Div para exibir mensagens de erro -->
+                    <input type="username" id="username" placeholder="Nome de usuário" required><br>
+                    <input type="email" id="email" placeholder="Email" required><br>
+                    <input type="password" id="password" placeholder="Senha" required><br>
+                    <button onclick="cadastro()">Cadastrar</button>
                 </div>
             </div>
         </header>        
