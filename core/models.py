@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -6,6 +7,7 @@ class Usuario(models.Model):
     username = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
     senha = models.CharField()
+    userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
 class Endereco(models.Model):
     rua = models.CharField(max_length=255)
