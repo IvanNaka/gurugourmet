@@ -23,15 +23,18 @@
                 </button>
             </div>
             <!-- links -->
-                <div class="nav-links">
-                    <a href="/index" class="nav-link" id="gg">GuruGourmet</a>
-                    <div class="nav-link register-link">
+            <div class="nav-links">
+                <a href="/index" class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link register-link">
+                    {% if not user.is_authenticated %}
                         <a href="/cadastro" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
-                    <div class="nav-link login-link">
+                        <div class="nav-link login-link">
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
-                    </div>
+                        </div>
+                    {% else %}
+                        <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                    {% endif %}
                 </div>
-
         </div>
     </nav>
     <!-- final nav -->

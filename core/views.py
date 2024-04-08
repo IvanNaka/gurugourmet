@@ -45,6 +45,7 @@ class CadastroView(View):
         usuarioNovo.username = username
         usuarioNovo.senha = senha
         usuarioNovo.email = email
+        usuarioNovo.userDjango = userDjango
         request.session['username'] = username
         usuarioNovo.save()
         if not userDjango and not usuarioNovo:
