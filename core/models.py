@@ -21,6 +21,7 @@ class Endereco(models.Model):
 
 class Receita(models.Model):
     texto = models.TextField()
+    titulo = models.CharField(max_length=255, default='')
     data_criacao = models.DateTimeField()
     status = models.BooleanField()
     tempo_preparo = models.CharField(max_length=255, null=True)
