@@ -23,6 +23,8 @@ class Receita(models.Model):
     texto = models.TextField()
     data_criacao = models.DateTimeField()
     status = models.BooleanField()
+    tempo_preparo = models.CharField(max_length=255, null=True)
+    imagem_principal = models.FileField(max_length=255, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
 
 class Ingrediente(models.Model):
@@ -50,7 +52,7 @@ class IngredienteReceita(models.Model):
 class Imagem(models.Model):
     status = models.BooleanField()
     receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
-    path = models.CharField()
+    path = models.FileField()
 
 class Comentario(models.Model):
     status = models.BooleanField()

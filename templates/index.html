@@ -64,7 +64,15 @@
             <!-- lista container -->
             <div class="lista-container">
                 <!-- receita individual -->
-                <a href="enderecoReceita" class="receita">
+                {% for receita in lista_receitas %}
+                    <a href="/receita/{{ receita.id }}" class="receita">
+                        <img src="{% static receita.]%}" class="img receita-img" alt="">
+                        <h5>{{ receita.path }}</h5>
+                        <p>Tempo de Preparo: {{ receita.tempo_preparo }}</p>
+                    </a>
+                {% endfor %}
+
+                <a href="/receita/{% receita_id %}" class="receita">
                     <img src="{% static 'assets/receitas/receita1.jpg'%}" class="img receita-img" alt="">
                     <h5>Bobó de Camarão</h5>
                     <p>Tempo de Preparo: 45min</p>

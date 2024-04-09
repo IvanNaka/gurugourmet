@@ -6,13 +6,17 @@ from django.views import View
 from django import forms
 from django.views.generic import TemplateView
 
-from core.models import Usuario
+from core.models import Usuario, Receita
 
 
 class HomeView(View):
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
-        context = {'username': user}
+        lista_receitas = Receita.objects.filter(status=True).all()[:6]
+        context = {}
+        context['lista_receitas'] = lista_receitas
+        context['user'] = user
+
         return render(self.request, "index.html", context)
 
 class LoginView(View):
@@ -51,3 +55,11 @@ class CadastroView(View):
         if not userDjango and not usuarioNovo:
             return JsonResponse({'error': 'Erro ao cadastrar usuário!'})
         return JsonResponse({'success': True})
+
+
+class ReceitaView(View):
+    def get(self, request, **kwargs):
+        receita_id = self.request.GET.get('receita_id')
+        context = {}
+        context['receita_id'] = receita_id
+        return render(self.request, "register.html")
