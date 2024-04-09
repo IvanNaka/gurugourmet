@@ -59,7 +59,6 @@ class CadastroView(View):
 
 class ReceitaView(View):
     def get(self, request, **kwargs):
-        receita_id = self.request.GET.get('receita_id')
+        receita_id = kwargs.get('receita_id')
         context = {}
-        context['receita_id'] = receita_id
         return render(self.request, "register.html")
