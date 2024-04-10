@@ -6,7 +6,7 @@ from django.views import View
 from django import forms
 from django.views.generic import TemplateView
 
-from core.models import Usuario, Receita, Ingrediente
+from core.models import Usuario, Receita, Ingrediente, IngredienteReceita
 
 
 class HomeView(View):
@@ -80,6 +80,33 @@ class ReceitaView(View):
 
 class UpdateReceitaView(View):
     def get(self, request, **kwargs):
+        receita_id = kwargs.get('receita_id')
+        receita = Receita.objects.filter(id=receita_id).first()
+        listaIngredientes = list(IngredienteReceita.objesct.filter(receita_id=receita_id))
+        context = {"receita": receita, "listaIngredientes": listaIngredientes}
+        return render(self.request, "register.html", context)
+    def post(self, request, **kwargs):
+        receita_id = kwargs.get('receita_id')
+        texto_novo = self.request.POST.get("texto")
+        tempo_preparo_novo = self.request.POST.get("tempo_preparo")
+        titulo_novo = self.request.POST.get("titulo")
+        lista_ingredientes = self.request.POST.getlist("ingredientes")
+        receita = Receita.objects.filter(id=receita_id)
+        receita.texto = texto_novo
+        receita.tempo_preparo = tempo_preparo_novo
+        receita.titulo = titulo_novo
+        receita.save()
+        IngredienteReceita.objects.filter(receita_id=receita_id).delete()
+        for ingrediente_lista in lista_ingredientes:
+            ingrediente = IngredienteReceita()
+            ingrediente.ingrediente_id = ingrediente_lista.get("ingrediente_id")
+            ingrediente.receita_id = receita_id
+            ingrediente.quantidade_id = ingrediente_lista.get("quantidade_id")
+            ingrediente.unidade_medida = ingrediente_lista.get("unidade_medida_id")
+            ingrediente.save()
+
+        return JsonResponse({'success': True})
+    def delete(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
         context = {}
         return render(self.request, "register.html")
