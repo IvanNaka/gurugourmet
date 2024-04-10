@@ -81,7 +81,6 @@ function removerIngrediente(item) {
 }
 
 function login() {
-    debugger
     var formData = new FormData();
     formData.append('email', document.getElementById('email').value);
     formData.append('password', document.getElementById('password').value);

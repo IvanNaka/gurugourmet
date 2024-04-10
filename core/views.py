@@ -6,15 +6,30 @@ from django.views import View
 from django import forms
 from django.views.generic import TemplateView
 
-from core.models import Usuario, Receita
+from core.models import Usuario, Receita, Ingrediente
 
 
 class HomeView(View):
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
         lista_receitas = Receita.objects.filter(status=True).all()[:6]
+        lista_ingredientes = Ingrediente.objects.order_by('nome').all()
         context = {}
         context['lista_receitas'] = lista_receitas
+        context['lista_ingredientes'] = lista_ingredientes
+        context['user'] = user
+
+        return render(self.request, "index.html", context)
+
+
+class GetIngredientesView(View):
+    def get(self, request, **kwargs):
+        user = self.request.session.get('username')
+        lista_receitas = Receita.objects.filter(status=True).all()[:6]
+        lista_ingredientes = Ingrediente.objects.order_by('nome').all()
+        context = {}
+        context['lista_receitas'] = lista_receitas
+        context['lista_ingredientes'] = lista_ingredientes
         context['user'] = user
 
         return render(self.request, "index.html", context)
@@ -60,5 +75,16 @@ class CadastroView(View):
 class ReceitaView(View):
     def get(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
+        context = {}
+        return render(self.request, "register.html")
+
+class UpdateReceitaView(View):
+    def get(self, request, **kwargs):
+        receita_id = kwargs.get('receita_id')
+        context = {}
+        return render(self.request, "register.html")
+
+class CreateReceitaView(View):
+    def get(self, request, **kwargs):
         context = {}
         return render(self.request, "register.html")

@@ -27,4 +27,6 @@ urlpatterns = [
     path('login/', csrf_exempt(views.LoginView.as_view())),
     path('cadastro/', csrf_exempt(views.CadastroView.as_view())),
     path('receita/<int:receita_id>', csrf_exempt(views.ReceitaView.as_view())),
+    path('receita/edit/<int:receita_id>', csrf_exempt(views.ReceitaView.as_view())),
+    path('receita/create', csrf_exempt(views.ReceitaView.as_view())),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
