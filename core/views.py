@@ -17,7 +17,7 @@ class HomeView(View):
         context = {}
         context['lista_receitas'] = lista_receitas
         context['lista_ingredientes'] = lista_ingredientes
-        context['user'] = user
+        context['username'] = user
 
         return render(self.request, "index.html", context)
 
@@ -40,10 +40,9 @@ class LoginView(View):
     def post(self, request, **kwargs):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
-        usuario = Usuario.objects.filter(email=email, senha=senha)
-        is_valido = usuario.exists()
-        user = authenticate(request, username=email, password=senha)
-        if is_valido and user:
+        usuario = Usuario.objects.filter(email=email, senha=senha).first()
+        user = authenticate(request, username=usuario.username, password=senha)
+        if usuario and user:
             login(request, user)
             request.session['username'] = usuario.username
             return JsonResponse({'success': True})
@@ -69,6 +68,7 @@ class CadastroView(View):
         usuarioNovo.save()
         if not userDjango and not usuarioNovo:
             return JsonResponse({'error': 'Erro ao cadastrar usuário!'})
+        login(request, userDjango)
         return JsonResponse({'success': True})
 
 
