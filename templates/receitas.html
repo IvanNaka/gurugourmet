@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GuruGourmet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
+    <script src="{% static '/js/script.js' %}"></script>
+</head>
+<body>
+    <!-- nav -->
+    <nav class="navbar">
+        <div class="nav-center">
+            <!-- header -->
+            <div class="nav-header">
+                <a href="../" class="nav-logo">
+                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
+                </a>
+                <button type="button" class="btn nav-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- links -->
+            <div class="nav-links">
+                <a href="../" class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link login-link">
+                    <a href="./login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- final nav -->
+    <!-- main -->
+    <main class="content">
+        <!-- header -->
+        <header class="hero">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h4>Receita de Hamburguer Caseiro</h4>
+                    
+                </div>
+                <div><img src="./static/assets/receitas/download.jpeg"></div>
+            </div>
+        </header>
+        <div class="conteudo">
+            <div class="card">
+                <div class="card-text">
+                    <h4>INGREDIENTES</h4>
+                    <ul>
+                        <li> 500 g de carne moída (de sua preferência)</li>
+                        <li> 1 linguiça calabresa pequena moída no liquidificador</li>
+                        <li> 2 dentes de alho picados</li>
+                        <li> 1 sazón sabor do nordeste</li>  
+                        <li> 1 cebola branca média ralada</li>
+                        <li> pimenta-do-reino a gosto</li>
+                        <li> sal a gosto</li>                                      
+                    </ul>                    
+                </div> 
+            </div>
+            <div class="card">
+                <div class="card-text">
+                    <h4>Equipamentos</h4>
+                    <ul>
+                        <li> Tigela</li>
+                        <li> Papel alumínio</li>
+                        <li> Frigideira</li>                                                            
+                    </ul>                    
+                </div> 
+            </div>
+            <div class="card">
+                <div class="card-text">
+                    <h4>PASSOS</h4>
+                    <ul>
+                        <li>1- Em uma tigela, misture muito bem todos os ingredientes.</li>
+                        <br>
+                        <li>2- Divida em bolinhas e amasse para ficar no formado de hambúrguer e com a espessura que deseja.</li>
+                        <br>
+                        <li>3- Separe a carne em um pedaço de papel alumínio e reserve.</li>
+                        <br>
+                        <li>4- Frite a quantidade que desejar.</li> 
+                        <br> 
+                        <li>5- Se preferir, pode guardar os hambúrgueres, envolvidos no papel alumínio, no freezer por até 30 dias.</li>                                      
+                    </ul>                    
+                </div> 
+            </div>
+            </div>
+        <!-- final header-->
+        <!-- container receitas -->
+        <section class="receitas-container">
+            <!-- menu container-->
+            <div class="menu-container">
+                <!-- menu content -->
+            </div>
+            <!-- final menu container-->
+            <!-- lista container -->
+            <div class="lista-container">
+                <!-- lista de receitas -->
+            </div>
+            <!-- final lista container -->
+        </section>
+        <!-- final container receitas -->
+    </main>
+    <!-- final main -->
+    <!-- footer -->
+    <footer class="content-footer">
+        <!-- footer content -->
+    </footer>
+    <!-- final footer -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
