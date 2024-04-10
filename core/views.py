@@ -75,14 +75,17 @@ class CadastroView(View):
 class ReceitaView(View):
     def get(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
-        context = {}
-        return render(self.request, "register.html")
+        receita = Receita.objects.filter(id=receita_id).first()
+        listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
+        context = {"receita": receita, "listaIngredientes": listaIngredientes}
+        print(listaIngredientes)
+        return render(self.request, "receitas.html", context)
 
 class UpdateReceitaView(View):
     def get(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
         receita = Receita.objects.filter(id=receita_id).first()
-        listaIngredientes = list(IngredienteReceita.objesct.filter(receita_id=receita_id))
+        listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
         context = {"receita": receita, "listaIngredientes": listaIngredientes}
         return render(self.request, "register.html", context)
     def post(self, request, **kwargs):
