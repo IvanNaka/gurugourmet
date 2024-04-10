@@ -108,8 +108,9 @@ class UpdateReceitaView(View):
         return JsonResponse({'success': True})
     def delete(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
-        context = {}
-        return render(self.request, "register.html")
+        IngredienteReceita.objects.filter(receita_id=receita_id).delete()
+        Receita.objects.filter(receita_id=receita_id).delete()
+        return JsonResponse({'success': True})
 
 class CreateReceitaView(View):
     def get(self, request, **kwargs):
