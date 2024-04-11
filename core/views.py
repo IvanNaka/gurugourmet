@@ -87,7 +87,7 @@ class UpdateReceitaView(View):
         receita = Receita.objects.filter(id=receita_id).first()
         listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
         context = {"receita": receita, "listaIngredientes": listaIngredientes}
-        return render(self.request, "edit.html", context)
+        return render(self.request, "editar_receitas.html", context)
     def post(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
         texto_novo = self.request.POST.get("texto")
