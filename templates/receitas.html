@@ -39,27 +39,29 @@
         <header class="hero">
             <div class="hero-container">
                 <div class="hero-text">
-                    <h4>Receita /h4>
+                    <h4>{{ receita.titulo }}</h4>
                     
                 </div>
-                <div><img src="./static/assets/receitas/download.jpeg"></div>
+                <div><img src="{{receita.imagem_principal}}"></div>
             </div>
         </header>
         <div class="conteudo">
             <div class="card">
                 <div class="card-text">
                     <h4>INGREDIENTES</h4>
+                    <ul>
+                        {% for ingrediente in listaIngredientes %}
 
-                    {{listaIngredientes.texto}}
+                            <li>{{ingrediente.nome}}</li>
 
-                </div> 
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
             <div class="card">
                 <div class="card-text">
                     <h4>PASSOS</h4>
-                    <ul>
-                        {{receita.texto}}
-                    </ul>                    
+                    <h5>{{receita.texto}}</h5>
                 </div> 
             </div>
             </div>
@@ -82,7 +84,10 @@
     <!-- final main -->
     <!-- footer -->
     <footer class="content-footer">
-        <!-- footer content -->
+        <p>
+            &copy; <span id="data"></span>
+            <span class="footer-logo">GuruGourmet</span>
+        </p>
     </footer>
     <!-- final footer -->
     <script src="{% static 'js/script.js' %}"></script>
