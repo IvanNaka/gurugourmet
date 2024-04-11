@@ -11,6 +11,7 @@
     <script src="{% static '/js/script.js' %}"></script>
 </head>
 <body>
+    <!-- nav -->
     <nav class="navbar">
         <div class="nav-center">
             <!-- header -->
@@ -31,9 +32,62 @@
             </div>
         </div>
     </nav>
-
-    <main>
-        <h1>Formulario da receita</h1>
+    <!-- final nav -->
+    <!-- main -->
+    <main class="content">
+        <!-- header -->
+        <header class="hero">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h4>{{ receita.titulo }}</h4>
+                    
+                </div>
+                <div><img src="{{receita.imagem_principal}}"></div>
+            </div>
+        </header>
+            <h1>Editar Receita</h1>
+    <form id="edit_receita_form" method="post">
+        {% csrf_token %}
+        <label for="titulo">Título:</label><br>
+        <input type="text" id="titulo" name="titulo" value="{{ receita.titulo }}"><br><br>
+        <label for="tempo_preparo">Tempo de Preparo:</label><br>
+        <input type="text" id="tempo_preparo" name="tempo_preparo" value="{{ receita.tempo_preparo }}"><br><br>
+        <label for="texto">Texto:</label><br>
+        <textarea id="texto" name="texto">{{ receita.texto }}</textarea><br><br>
+        <label for="ingredientes">Ingredientes:</label><br>
+        <select id="ingredientes" name="ingredientes" multiple>
+            {% for ingrediente in listaIngredientes %}
+            <option value="{{ ingrediente.id }}">{{ ingrediente.nome }}</option>
+            {% endfor %}
+        </select><br><br>
+        <button type="submit">Salvar</button>
+    </form>
+            
+        <!-- final header-->
+        <!-- container receitas -->
+        <section class="receitas-container">
+            <!-- menu container-->
+            <div class="menu-container">
+                <!-- menu content -->
+            </div>
+            <!-- final menu container-->
+            <!-- lista container -->
+            <div class="lista-container">
+                <!-- lista de receitas -->
+            </div>
+            <!-- final lista container -->
+        </section>
+        <!-- final container receitas -->
     </main>
+    <!-- final main -->
+    <!-- footer -->
+    <footer class="content-footer">
+        <p>
+            &copy; <span id="data"></span>
+            <span class="footer-logo">GuruGourmet</span>
+        </p>
+    </footer>
+    <!-- final footer -->
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
-<html>
+</html>
