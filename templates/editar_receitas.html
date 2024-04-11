@@ -1,51 +1,15 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
-    <script src="{% static '/js/script.js' %}"></script>
 </head>
 <body>
-    <!-- nav -->
-    <nav class="navbar">
-        <div class="nav-center">
-            <!-- header -->
-            <div class="nav-header">
-                <a href="../" class="nav-logo">
-                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
-                </a>
-                <button type="button" class="btn nav-btn">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-            </div>
-            <!-- links -->
-            <div class="nav-links">
-                <a href="../" class="nav-link" id="gg">GuruGourmet</a>
-                <div class="nav-link login-link">
-                    <a href="./login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- final nav -->
-    <!-- main -->
-    <main class="content">
-        <!-- header -->
-        <header class="hero">
-            <div class="hero-container">
-                <div class="hero-text">
-                    <h4>{{ receita.titulo }}</h4>
-                    
-                </div>
-                <div><img src="{{receita.imagem_principal}}"></div>
-            </div>
-        </header>
-            <h1>Editar Receita</h1>
+    <h1>Editar Receita</h1>
     <form id="edit_receita_form" method="post">
         {% csrf_token %}
         <label for="titulo">Título:</label><br>
@@ -62,32 +26,5 @@
         </select><br><br>
         <button type="submit">Salvar</button>
     </form>
-            
-        <!-- final header-->
-        <!-- container receitas -->
-        <section class="receitas-container">
-            <!-- menu container-->
-            <div class="menu-container">
-                <!-- menu content -->
-            </div>
-            <!-- final menu container-->
-            <!-- lista container -->
-            <div class="lista-container">
-                <!-- lista de receitas -->
-            </div>
-            <!-- final lista container -->
-        </section>
-        <!-- final container receitas -->
-    </main>
-    <!-- final main -->
-    <!-- footer -->
-    <footer class="content-footer">
-        <p>
-            &copy; <span id="data"></span>
-            <span class="footer-logo">GuruGourmet</span>
-        </p>
-    </footer>
-    <!-- final footer -->
-    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
