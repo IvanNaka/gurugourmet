@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GuruGourmet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
+    <script src="{% static '/js/script.js' %}"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-center">
+            <!-- header -->
+            <div class="nav-header">
+                <a href="../" class="nav-logo">
+                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
+                </a>
+                <button type="button" class="btn nav-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- links -->
+            <div class="nav-links">
+                <a href="../" class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link login-link">
+                    <a href="./login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        <h1>Formulario da receita</h1>
+    </main>
+</body>
+<html>
