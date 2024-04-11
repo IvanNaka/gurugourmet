@@ -17,7 +17,7 @@ class HomeView(View):
         context = {}
         context['lista_receitas'] = lista_receitas
         context['lista_ingredientes'] = lista_ingredientes
-        context['user'] = user
+        context['username'] = user
 
         return render(self.request, "index.html", context)
 
@@ -40,10 +40,9 @@ class LoginView(View):
     def post(self, request, **kwargs):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
-        usuario = Usuario.objects.filter(email=email, senha=senha)
-        is_valido = usuario.exists()
-        user = authenticate(request, username=email, password=senha)
-        if is_valido and user:
+        usuario = Usuario.objects.filter(email=email, senha=senha).first()
+        user = authenticate(request, username=usuario.username, password=senha)
+        if usuario and user:
             login(request, user)
             request.session['username'] = usuario.username
             return JsonResponse({'success': True})
@@ -69,20 +68,24 @@ class CadastroView(View):
         usuarioNovo.save()
         if not userDjango and not usuarioNovo:
             return JsonResponse({'error': 'Erro ao cadastrar usuário!'})
+        login(request, userDjango)
         return JsonResponse({'success': True})
 
 
 class ReceitaView(View):
     def get(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
-        context = {}
-        return render(self.request, "register.html")
+        receita = Receita.objects.filter(id=receita_id).first()
+        listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
+        context = {"receita": receita, "listaIngredientes": listaIngredientes}
+        print(listaIngredientes)
+        return render(self.request, "receitas.html", context)
 
 class UpdateReceitaView(View):
     def get(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
         receita = Receita.objects.filter(id=receita_id).first()
-        listaIngredientes = list(IngredienteReceita.objesct.filter(receita_id=receita_id))
+        listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
         context = {"receita": receita, "listaIngredientes": listaIngredientes}
         return render(self.request, "edit.html", context)
     def post(self, request, **kwargs):
