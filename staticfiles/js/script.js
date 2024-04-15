@@ -70,7 +70,7 @@ function adicionarIngrediente() {
         inputIngrediente.value = '';
     } else {
         // Ingrediente não encontrado, exibe uma mensagem de erro
-        alert('Ingrediente não encontrado. Por favor, digite um ingrediente válido.');
+        alert('Ingrediente não encontrado. Por favor, digite um ingrediente válido.aaaa');
         // Você também pode exibir a mensagem de erro em um elemento na página, em vez de usar alert
     }
 }

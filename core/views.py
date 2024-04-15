@@ -24,15 +24,8 @@ class HomeView(View):
 
 class GetIngredientesView(View):
     def get(self, request, **kwargs):
-        user = self.request.session.get('username')
-        lista_receitas = Receita.objects.filter(status=True).all()[:6]
-        lista_ingredientes = Ingrediente.objects.order_by('nome').all()
-        context = {}
-        context['lista_receitas'] = lista_receitas
-        context['lista_ingredientes'] = lista_ingredientes
-        context['user'] = user
-
-        return render(self.request, "index.html", context)
+        lista_ingredientes = list(Ingrediente.objects.order_by('nome').values())
+        return JsonResponse({'sucess': True, 'lista_ingredientes': lista_ingredientes})
 
 class LoginView(View):
     def get(self, request, **kwargs):

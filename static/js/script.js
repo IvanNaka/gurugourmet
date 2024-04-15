@@ -23,14 +23,15 @@ data.textContent = anoAtual;
 // Ingredientes
 // ------------------------------------------------------------------------------------------
 
-function criarItemIngrediente(nomeIngrediente) {
+function criarItemIngrediente(ingrediente) {
     // Cria um novo elemento de div para o item de ingrediente
     const novoItem = document.createElement('div');
     novoItem.classList.add('ingredient-item');
-
+debugger
     // Cria um novo elemento de span para o nome do ingrediente
     const novoTexto = document.createElement('span');
-    novoTexto.textContent = nomeIngrediente;
+    novoTexto.textContent = ingrediente.nome;
+    novoTexto.id = ingrediente.id;
     novoTexto.classList.add('ingredient-text'); // Adiciona uma classe ao elemento de texto
 
     // Cria um novo elemento de ícone do Font Awesome para representar o botão de remoção
@@ -51,17 +52,15 @@ function criarItemIngrediente(nomeIngrediente) {
 // Função para adicionar um ingrediente à lista
 function adicionarIngrediente() {
     // Tem que tirar isso aqui depois e colocar vindo do banco de dados
-    const ingredientesDisponiveis = ["Cenoura", "Tomate", "Cebola", "Alho", "Pimentão", "Batata", "Abobrinha", "Brócolis", "Couve", "Salsinha", "Cebolinha", "Manjericão", "Coentro", "Alface", "Rúcula", "Espinafre", "Milho", "Ervilha", "Feijão", "Grão-de-bico"];
-
+    var ingredientesDisponiveis = getListaIngredientes()
     // Captura o valor do input de ingrediente
     const inputIngrediente = document.querySelector('.ingredientInput');
     const novoIngrediente = inputIngrediente.value.trim();
-
-    // Verifica se o ingrediente está presente no banco de dados
-    if (verificarIngrediente(novoIngrediente, ingredientesDisponiveis)) {
+    // Verifica se o ingrediente está presente na lista de ingredientes4
+    var ingredienteObj = verificarIngrediente(novoIngrediente, ingredientesDisponiveis)
+    if (ingredienteObj) {
         // Cria um novo item de ingrediente
-        const novoItem = criarItemIngrediente(novoIngrediente);
-
+        const novoItem = criarItemIngrediente(ingredienteObj);
         // Adiciona o novo item de ingrediente à lista de ingredientes
         const listaIngredientes = document.getElementById('listaIngredientes');
         listaIngredientes.appendChild(novoItem);
@@ -98,6 +97,18 @@ function login() {
     };
     xhr.send(formData);
 }
+function getListaIngredientes() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/ingredientes/', false); // Alterado para true para fazer uma requisição assíncrona
+    xhr.send(); // Enviar a requisição
+    if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText).lista_ingredientes; // Corrigido o acesso ao responseText
+        return response; // Chama o callback com null para o erro e o response para os dados
+    } else {
+        console.log('Erro ao trazer ingredientes');
+        return []
+    }
+}
 function cadastro() {
     var formData = new FormData();
     formData.append('email', document.getElementById('email').value);
@@ -122,11 +133,15 @@ function cadastro() {
 // Função para verificar se o ingrediente está no banco de dados
 function verificarIngrediente(ingrediente, ingredientesDisponiveis) {
     // Verifica se o ingrediente está na lista de ingredientes disponíveis
-    if (ingredientesDisponiveis.includes(ingrediente)) {
-        return true; // Ingrediente encontrado
-    } else {
-        return false; // Ingrediente não encontrado
-    }
+    var ingredienteVerificado = null;
+    ingredientesDisponiveis.forEach(
+        (element) => {
+            if (element.nome === ingrediente) {
+                ingredienteVerificado = element
+            }
+        }
+    )
+    return ingredienteVerificado
 }
 
 // Adiciona um ouvinte de evento para o botão "Adicionar"
