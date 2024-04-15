@@ -1,3 +1,6 @@
+import json
+
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -87,21 +90,23 @@ class UpdateReceitaView(View):
         tempo_preparo_novo = self.request.POST.get("tempo_preparo")
         titulo_novo = self.request.POST.get("titulo")
         lista_ingredientes = self.request.POST.getlist("ingredientes")
-        receita = Receita.objects.filter(id=receita_id)
+        receita = Receita.objects.filter(id=receita_id).first()
         receita.texto = texto_novo
         receita.tempo_preparo = tempo_preparo_novo
         receita.titulo = titulo_novo
         receita.save()
-        IngredienteReceita.objects.filter(receita_id=receita_id).delete()
+        #IngredienteReceita.objects.filter(receita_id=receita_id).delete()
+        lista_obj = []
         for ingrediente_lista in lista_ingredientes:
             ingrediente = IngredienteReceita()
+            ingrediente_lista = json.loads(ingrediente_lista)
             ingrediente.ingrediente_id = ingrediente_lista.get("ingrediente_id")
             ingrediente.receita_id = receita_id
-            ingrediente.quantidade_id = ingrediente_lista.get("quantidade_id")
-            ingrediente.unidade_medida = ingrediente_lista.get("unidade_medida_id")
-            ingrediente.save()
-
-        return JsonResponse({'success': True})
+            ingrediente.quantidade = ingrediente_lista.get("quantidade")
+            ingrediente.unidade_medida = ingrediente_lista.get("unidade_medida")
+            lista_obj.append(ingrediente)
+        IngredienteReceita.objects.bulk_create(lista_obj)
+        return redirect('/')
     def delete(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
         IngredienteReceita.objects.filter(receita_id=receita_id).delete()

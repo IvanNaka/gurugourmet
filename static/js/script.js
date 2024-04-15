@@ -98,6 +98,7 @@ function login() {
     xhr.send(formData);
 }
 function getListaIngredientes() {
+    debugger
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/ingredientes/', false); // Alterado para true para fazer uma requisição assíncrona
     xhr.send(); // Enviar a requisição
