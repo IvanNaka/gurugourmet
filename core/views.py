@@ -116,4 +116,4 @@ class UpdateReceitaView(View):
 class CreateReceitaView(View):
     def get(self, request, **kwargs):
         context = {}
-        return render(self.request, "register.html")
+        return render(self.request, "criar_receita.html")

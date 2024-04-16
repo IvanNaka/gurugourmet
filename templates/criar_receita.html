@@ -1,51 +1,141 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>GuruGourmet</title>    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuruGourmet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
+</head>
+<script>
+window.onload = function() {
 
-        <header style="background-color: aqua;">
-            <h1 style="text-align: center;">Adicionar coisas que o cainã fez</h1>
-            <hr>
-        </header>
-        
-        <main>
-            <form action="" method="post" enctype="multipart/form-data">
-                <h3>Sua receita</h3>
-                <label for="file">Escolha uma imagem</label>
-                <input type="file" id="file" accept="image/png, image/jpeg"><br>
+    var form = document.getElementById('create_receita_form');
+    var selectElement = document.getElementById('ingredientes');
 
-                <Label for="titulo">Titulo da receita:</Label><br>
-                <input type="text" id="titulo"> <br>
+    form.addEventListener('submit', function(event) {
+        for (var i = 0; i < selectElement.options.length; i++) {
+            selectElement.options[i].selected = true;
+        }
+    });
 
+    document.getElementById('removeIngrediente').addEventListener('click', removerIngrediente);
 
-                <label for="apresentação">Apresentação da receita</label><br>
-                <textarea id="text" rows="3" cols="25"></textarea>
+    function removerIngrediente() {
+        var selectElement = document.getElementById('ingredientes');
+        var selectedOptions = selectElement.selectedOptions;
 
-                <h3>Informações da receita</h3>
-                <label for="ingredientes">Ingredientes</label><br>
-                <textarea id="ingredientes" rows="5" cols="30"></textarea>
-                <br>
-                <label for="passos">Passo-a-passo</label><br>
-                <textarea id="passos" rows="10" cols="30"></textarea>
-                <br>
-                <input type="reset">
-                <button>Enviar receita</button>
+        for (var i = 0; i < selectedOptions.length; i++) {
+            selectElement.removeChild(selectedOptions[i]);
+        }
+    }
 
-            </form>
-        </main>
+    document.getElementById('addIngrediente').addEventListener('click', function() {
+    var novoIngrediente = document.getElementById('novoIngrediente').value;
+    var quantidade = document.getElementById('quantidade').value;
+    var unidadeMedida = document.getElementById('unidadeMedida').value;
 
+    var ingredientesDisponiveis = getListaIngredientes()
 
+    var ingredienteObj = verificarIngrediente(novoIngrediente, ingredientesDisponiveis)
 
+    if (novoIngrediente != null && quantidade != null && unidadeMedida != null && ingredienteObj != null) {
+        var selectElement = document.getElementById('ingredientes');
+        var option = document.createElement("option");
+        option.text = novoIngrediente + " - " + quantidade + " " + unidadeMedida;
+        option.value = JSON.stringify({
+            "ingrediente_id": ingredienteObj.id,
+            "nome": novoIngrediente,
+            "quantidade": quantidade,
+            "unidadeMedida": unidadeMedida
+        });
+        selectElement.add(option);
+    }
+    });
 
-        
-        <footer style="background-color: aqua; text-align: center;">
-            <hr>
-            <h1>Adicionar coisas dos cainã</h1>
-        </footer>
+    function getListaIngredientes() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/ingredientes/', false);
+    xhr.send();
+    if (xhr.status === 200) {
+        return JSON.parse(xhr.responseText).lista_ingredientes;
+    } else {
+        console.log('Erro ao trazer ingredientes');
+        return []
+    }
+}
+    function verificarIngrediente(ingrediente, ingredientesDisponiveis) {
+        var ingredienteVerificado = null;
+        ingredientesDisponiveis.forEach(
+            (element) => {
+                if (element.nome === ingrediente) {
+                    ingredienteVerificado = element
+                }
+            }
+        )
+        return ingredienteVerificado
+    }
+}
+</script>
+<body>
+    <!-- nav -->
+    <nav class="navbar">
+        <div class="nav-center">
+            <!-- header -->
+            <div class="nav-header">
+                <a href="../" class="nav-logo">
+                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
+                </a>
+                <button type="button" class="btn nav-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- links -->
+            <div class="nav-links">
+                <a href="/index" class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link register-link">
+                    {% if not user.is_authenticated %}
+                        <a href="/cadastro" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
+                        <div class="nav-link login-link">
+                        <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                        </div>
+                    {% else %}
+                        <a href="/receita/create">Nova receita</a>
+                        <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    </body>
+    <h1>Editar Receita</h1>
+    <form id="addIngredienteForm">
+        <label for="novoIngrediente">Novo Ingrediente:</label>
+        <input type="text" id="novoIngrediente" name="novoIngrediente"><br>
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" id="quantidade" name="quantidade" step="0.01"><br>
+        <label for="unidadeMedida">Unidade de Medida:</label>
+        <input type="text" id="unidadeMedida" name="unidadeMedida"><br>
+        <button type="button" id="addIngrediente">Add Ingrediente</button>
+    </form>
+    <form id="create_receita_form" method="post">
+        {% csrf_token %}
+        <label for="ingredientes">Ingredientes:</label><br>
+        <select id="ingredientes" name="ingredientes" multiple>
+            {% for ingrediente in listaIngredientes %}
+                <option value='{"ingrediente_id": "{{ ingrediente.ingrediente_id }}", "quantidade": "{{ ingrediente.quantidade }}", "unidadeMedida": "{{ ingrediente.unidadeMedida }}", "nome": "{{ ingrediente.nome }}"}'>{{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}</option>
+            {% endfor %}
+        </select><br><br>
+        <button type="button" class="btn" id="removeIngrediente">Remover</button>
+        <label for="titulo">Título:</label><br>
+        <input type="text" id="titulo" name="titulo"><br><br>
+        <label for="tempo_preparo">Tempo de Preparo:</label><br>
+        <input type="text" id="tempo_preparo" name="tempo_preparo"><br><br>
+        <label for="texto">Texto:</label><br>
+        <textarea id="texto" name="texto"></textarea><br><br>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
 </html>
