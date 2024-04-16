@@ -4,10 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
+    <link rel="stylesheet" href={% static 'css/styles.css' %}/>
+    <style>
+        body{
+
+        }
+        .box{
+            color: white;
+            position: absolute;
+            top: 60%;
+            left: 15%;
+            transfrom: translate(-50%,-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            width: 17%;
+        }
+        fielset{
+            border: 3px solid rebeccapurple;
+        }
+        legend{
+            border: 1px solid rebeccapurple;
+            padding: 10px;
+            text-align: center;
+            background-color: rebeccapurple;
+            border-radius: 8px;
+            
+        }
+        .inputBox{
+            position: relative;
+        }
+        .inputUser{
+            background: none;
+            border: none;
+            border-bottom: 1px solid white;
+            outline: none;
+            color: white;
+            font-size: 15px;
+            width: 100%;
+        }
+    </style>
 </head>
 <script>
 window.onload = function() {
@@ -86,12 +125,13 @@ window.onload = function() {
         <div class="nav-center">
             <!-- header -->
             <div class="nav-header">
-                <a href="../" class="nav-logo">
+                <a href="/receita/create" class="nav-logo">
                     <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
                 </a>
                 <button type="button" class="btn nav-btn">
                     <i class="fa-solid fa-bars"></i>
                 </button>
+                
             </div>
             <!-- links -->
             <div class="nav-links">
@@ -108,35 +148,79 @@ window.onload = function() {
                     {% endif %}
                 </div>
             </div>
+            
         </div>
     </nav>
 
-    <h1>Editar Receita</h1>
-    <form id="addIngredienteForm">
-        <label for="novoIngrediente">Novo Ingrediente:</label>
-        <input type="text" id="novoIngrediente" name="novoIngrediente"><br>
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" name="quantidade" step="0.01"><br>
-        <label for="unidadeMedida">Unidade de Medida:</label>
-        <input type="text" id="unidadeMedida" name="unidadeMedida"><br>
-        <button type="button" id="addIngrediente">Add Ingrediente</button>
-    </form>
-    <form id="edit_receita_form" method="post">
-        {% csrf_token %}
-        <label for="ingredientes">Ingredientes:</label><br>
-        <select id="ingredientes" name="ingredientes" multiple>
-            {% for ingrediente in listaIngredientes %}
-                <option value='{"ingrediente_id": "{{ ingrediente.ingrediente_id }}", "quantidade": "{{ ingrediente.quantidade }}", "unidadeMedida": "{{ ingrediente.unidadeMedida }}", "nome": "{{ ingrediente.nome }}"}'>{{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}</option>
-            {% endfor %}
-        </select><br><br>
-        <button type="button" class="btn" id="removeIngrediente">Remover</button>
-        <label for="titulo">Título:</label><br>
-        <input type="text" id="titulo" name="titulo" value="{{ receita.titulo }}"><br><br>
-        <label for="tempo_preparo">Tempo de Preparo:</label><br>
-        <input type="text" id="tempo_preparo" name="tempo_preparo" value="{{ receita.tempo_preparo }}"><br><br>
-        <label for="texto">Texto:</label><br>
-        <textarea id="texto" name="texto">{{ receita.texto }}</textarea><br><br>
-        <button type="submit">Salvar</button>
-    </form>
+    <main class="content">
+        <!-- header -->
+        <header class="hero">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h2>{{ receita.titulo }}</h2>
+                    <button onclick="window.location.href='/receita/create'">Criar Receita</button>
+                </div>
+            </div>
+        </header>
+        <!-- final header-->
+        <!-- container receitas -->
+        <div class="box">
+            <section class="receitas-container">
+                <!-- menu container-->
+                <div class="menu-container">
+                    <form action="">
+                        <fieldset>
+                            <!--<h2>Editar Receita</h2>-->
+                            <legend>Editar Receita</legend>
+                            <form id="addIngredienteForm">
+                            <div class="inputBox">   
+                                <label for="novoIngrediente">Novo Ingrediente:</label>
+                                <input type="text" id="novoIngrediente" name="novoIngrediente" class="inputUser" placeholder="Ingrediente">
+                            </div><br>
+                            <div class="inputBox">    
+                                <label for="quantidade">Quantidade:</label>
+                                <input type="number" id="quantidade" name="quantidade" class="inputUser" placeholder="Quantidade" step="0.01">
+                            </div><br>
+                            <div class="inputBox">
+                                <label for="unidadeMedida">Unidade de Medida:</label>
+                                <input type="text" id="unidadeMedida" name="unidadeMedida" class="inputUser" placeholder="Medida">
+                            </div>
+                                <button type="button" id="addIngrediente">Add Ingrediente</button><br><br>
+                            </form>
+                            <form id="edit_receita_form" method="post">
+                                {% csrf_token %}
+                            
+                                <label for="ingredientes">Ingredientes:</label><br>
+                                <select id="ingredientes" name="ingredientes" multiple>
+                                    {% for ingrediente in listaIngredientes %}
+                                        <option value='{"ingrediente_id": "{{ ingrediente.ingrediente_id }}", "quantidade": "{{ ingrediente.quantidade }}", "unidadeMedida": "{{ ingrediente.unidadeMedida }}", "nome": "{{ ingrediente.nome }}"}'>{{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}</option>
+                                    {% endfor %}
+                                </select><br>
+                                <button type="button" class="btn" id="removeIngrediente">Remover</button><br><br>
+                            <div class="inputBox">    
+                                <label for="titulo">Título:</label><br>
+                                <input type="text" id="titulo" name="titulo" value="{{ receita.titulo }}" class="inputUser"><br><br>
+                                <label for="tempo_preparo">Tempo de Preparo:</label><br>
+                                <input type="text" id="tempo_preparo" name="tempo_preparo" class="inputUser" value="{{ receita.tempo_preparo }}"><br><br>
+                                <label for="texto">Texto:</label>
+                                <br>
+                                <textarea id="texto" name="texto" > {{ receita.texto }}</textarea><br><br>
+                            </div>
+                                <button type="submit">Salvar</button>
+                            </form>
+                        </fieldset>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="content-footer">
+        <p>
+            &copy; <span id="data"></span>
+            <span class="footer-logo">GuruGourmet</span>
+        </p>
+    </footer>
+    <!-- final footer -->
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
