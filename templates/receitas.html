@@ -42,7 +42,7 @@
                     <h4>{{ receita.titulo }}</h4>
                     
                 </div>
-                <div><img src="{{receita.imagem_principal}}"></div>
+                <div></div>
             </div>
         </header>
         <div class="conteudo">
@@ -52,7 +52,7 @@
                     <ul>
                         {% for ingrediente in listaIngredientes %}
 
-                            <li>{{ingrediente.nome}}</li>
+                             <option value='{"ingrediente_id": "{{ ingrediente.ingrediente_id }}", "quantidade": "{{ ingrediente.quantidade }}", "unidadeMedida": "{{ ingrediente.unidadeMedida }}", "nome": "{{ ingrediente.nome }}"}'>{{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}</option>
 
                         {% endfor %}
                     </ul>
