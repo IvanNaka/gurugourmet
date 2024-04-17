@@ -108,7 +108,16 @@ function getListaIngredientes() {
         return []
     }
 }
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 function cadastro() {
+    var email = document.getElementById('email').value;
+    if (!validateEmail(email)) {
+        document.getElementById('error-message').textContent = 'Endereço de e-mail inválido';
+        return;
+    }
     var formData = new FormData();
     formData.append('email', document.getElementById('email').value);
     formData.append('password', document.getElementById('password').value);
@@ -273,3 +282,5 @@ function submitForm(event) {
         console.log("Formulário válido. Enviando dados...");
     }
 }
+
+

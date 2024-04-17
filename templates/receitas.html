@@ -9,6 +9,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
     <script src="{% static '/js/script.js' %}"></script>
+    <style>
+            button:active, button:visited {
+                color: inherit;
+            }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        var deleteButton = document.getElementById('deleteButton');
+        var receitaId = document.getElementById('deleteButton').value;
+        if(deleteButton) {
+            deleteButton.addEventListener('click', function() {
+                var receitaId = this.value;
+                fetch('/receita/edit/' + receitaId, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '/'; // Redirect to the homepage
+                    } else {
+                        console.error('Error deleting recipe');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    });
+
+    </script>
 </head>
 <body>
     <!-- nav -->
@@ -33,8 +69,11 @@
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
-                        <a href="/receita/create">Nova receita</a>
-                        <a href="/receita/edit/{{ receita.id }}">Editar receita</a>
+                        <button class="btn"><a href="/receita/create">Nova receita</a></button>
+                        {% if is_criador %}
+                            <button class="btn"><a href="/receita/edit/{{ receita.id }}">Editar receita</a></button>
+                            <button id="deleteButton" class="btn" value="{{ receita.id }}">Apagar receita</button>
+                        {% endif %}
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
                     {% endif %}
                 </div>

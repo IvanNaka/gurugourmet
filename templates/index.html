@@ -8,8 +8,11 @@
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href={% static 'css/styles.css' %}/>
-    <script>
-    </script>
+    <style>
+            button:active, button:visited {
+        color: inherit;
+    }
+    </style>
 </head>
 <body>
     <!-- nav -->
@@ -34,7 +37,7 @@
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
-                        <a href="/receita/create">Nova receita</a>
+                        <button class="btn" ><a href="/receita/create">Nova receita</a></button>
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
                     {% endif %}
                 </div>

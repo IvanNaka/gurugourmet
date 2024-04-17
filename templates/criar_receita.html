@@ -66,6 +66,9 @@
         width: 1115px;
         height: 80px;
     }
+    button:active, button:visited {
+    color: inherit;
+}
     </style>
 </head>
 <script>
@@ -162,7 +165,7 @@ window.onload = function() {
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
-                        <a href="/receita/create">Nova receita</a>
+                        <button class="btn" style="color: white;"><a href="/receita/create">Nova receita</a></button>
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
                     {% endif %}
                 </div>

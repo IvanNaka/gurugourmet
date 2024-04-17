@@ -83,8 +83,10 @@ class ReceitaView(View):
         receita_id = kwargs.get('receita_id')
         receita = Receita.objects.filter(id=receita_id).first()
         listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
-        context = {"receita": receita, "listaIngredientes": listaIngredientes}
-        print(listaIngredientes)
+        username_usuario = self.request.user.username
+        username_receita = receita.usuario.username
+        is_criador = username_usuario == username_receita
+        context = {"receita": receita, "listaIngredientes": listaIngredientes, "is_criador": is_criador}
         return render(self.request, "receitas.html", context)
 
 class UpdateReceitaView(View):
@@ -120,7 +122,7 @@ class UpdateReceitaView(View):
     def delete(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
         IngredienteReceita.objects.filter(receita_id=receita_id).delete()
-        Receita.objects.filter(receita_id=receita_id).delete()
+        Receita.objects.filter(id=receita_id).delete()
         return JsonResponse({'success': True})
 
 class CreateReceitaView(View):
