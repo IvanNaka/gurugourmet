@@ -78,16 +78,6 @@ window.onload = function() {
     var selectElement = document.getElementById('ingredientes');
 
     form.addEventListener('submit', function(event) {
-        var titulo = document.getElementById('titulo').value;
-        var tempo_preparo = document.getElementById('tempo_preparo').value;
-        var texto = document.getElementById('texto').value;
-        var image = document.getElementById('image').value;
-
-        if (!titulo || !tempo_preparo || !texto || !image) {
-            alert("Todos os campos devem ser preenchidos!");
-            event.preventDefault(); // Prevent form submission
-            return;
-        }
         for (var i = 0; i < selectElement.options.length; i++) {
             selectElement.options[i].selected = true;
         }
@@ -175,7 +165,7 @@ window.onload = function() {
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
-                        <button class="btn"><a href="/receita/create">Nova receita</a></button>
+                        <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
                     {% endif %}
                 </div>

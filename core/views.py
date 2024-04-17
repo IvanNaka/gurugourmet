@@ -115,7 +115,7 @@ class UpdateReceitaView(View):
             ingrediente.ingrediente_id = ingrediente_lista.get("ingrediente_id")
             ingrediente.receita_id = receita_id
             ingrediente.quantidade = ingrediente_lista.get("quantidade")
-            ingrediente.unidade_medida = ingrediente_lista.get("unidade_medida")
+            ingrediente.unidadeMedida = ingrediente_lista.get("unidadeMedida")
             lista_obj.append(ingrediente)
         IngredienteReceita.objects.bulk_create(lista_obj)
         return redirect('/')
@@ -158,7 +158,7 @@ class CreateReceitaView(View):
             ingrediente.ingrediente_id = ingrediente_lista.get("ingrediente_id")
             ingrediente.receita_id = receita.id
             ingrediente.quantidade = ingrediente_lista.get("quantidade")
-            ingrediente.unidade_medida = ingrediente_lista.get("unidade_medida")
+            ingrediente.unidadeMedida = ingrediente_lista.get("unidadeMedida")
             lista_obj.append(ingrediente)
         IngredienteReceita.objects.bulk_create(lista_obj)
         return redirect('/')

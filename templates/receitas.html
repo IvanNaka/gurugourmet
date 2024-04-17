@@ -52,7 +52,7 @@
         <div class="nav-center">
             <!-- header -->
             <div class="nav-header">
-                <a href=".../" class="nav-logo">
+                <a href="/.." class="nav-logo">
                     <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
                 </a>
                 <button type="button" class="btn nav-btn">
@@ -69,9 +69,9 @@
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
-                        <button class="btn"><a href="/receita/create">Nova receita</a></button>
+                        <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
                         {% if is_criador %}
-                            <button class="btn"><a href="/receita/edit/{{ receita.id }}">Editar receita</a></button>
+                            <button class="btn"><a href="/receita/edit/{{ receita.id }}"  style="color: white">Editar receita</a></button>
                             <button id="deleteButton" class="btn" value="{{ receita.id }}">Apagar receita</button>
                         {% endif %}
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
