@@ -27,7 +27,6 @@ function criarItemIngrediente(ingrediente) {
     // Cria um novo elemento de div para o item de ingrediente
     const novoItem = document.createElement('div');
     novoItem.classList.add('ingredient-item');
-debugger
     // Cria um novo elemento de span para o nome do ingrediente
     const novoTexto = document.createElement('span');
     novoTexto.textContent = ingrediente.nome;

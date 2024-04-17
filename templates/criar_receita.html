@@ -4,15 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
+    <link rel="stylesheet" href={% static 'css/styles.css' %}/>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    }
+
+    .navbar {
+        color: #fff;
+        padding: 10px;
+    }
+
+    .hero {
+        background-color: #ddd;
+        color: #333;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .receitas-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .inputBox {
+        margin-bottom: 10px;
+    }
+
+    .inputUser {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #444;
+    }
+    .receitas-container fieldset {
+        width: 100%;
+    }
+    textarea {
+        width: 1115px;
+        height: 80px;
+    }
+    select {
+        width: 1115px;
+        height: 80px;
+    }
+    </style>
 </head>
 <script>
 window.onload = function() {
 
-    var form = document.getElementById('create_receita_form');
+    var form = document.getElementById('edit_receita_form');
     var selectElement = document.getElementById('ingredientes');
 
     form.addEventListener('submit', function(event) {
@@ -85,16 +144,17 @@ window.onload = function() {
         <div class="nav-center">
             <!-- header -->
             <div class="nav-header">
-                <a href="../" class="nav-logo">
-                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
+                <a href="/receita/create" class="nav-logo">
+                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourm et">
                 </a>
                 <button type="button" class="btn nav-btn">
                     <i class="fa-solid fa-bars"></i>
                 </button>
+
             </div>
             <!-- links -->
             <div class="nav-links">
-                <a href="/index" class="nav-link" id="gg">GuruGourmet</a>
+                <a href="/.." class="nav-link" id="gg">GuruGourmet</a>
                 <div class="nav-link register-link">
                     {% if not user.is_authenticated %}
                         <a href="/cadastro" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
@@ -107,35 +167,70 @@ window.onload = function() {
                     {% endif %}
                 </div>
             </div>
+
         </div>
     </nav>
 
-    <h1>Editar Receita</h1>
-    <form id="addIngredienteForm">
-        <label for="novoIngrediente">Novo Ingrediente:</label>
-        <input type="text" id="novoIngrediente" name="novoIngrediente"><br>
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" name="quantidade" step="0.01"><br>
-        <label for="unidadeMedida">Unidade de Medida:</label>
-        <input type="text" id="unidadeMedida" name="unidadeMedida"><br>
-        <button type="button" id="addIngrediente">Add Ingrediente</button>
-    </form>
-    <form id="create_receita_form" method="post">
-        {% csrf_token %}
-        <label for="ingredientes">Ingredientes:</label><br>
-        <select id="ingredientes" name="ingredientes" multiple>
-            {% for ingrediente in listaIngredientes %}
-                <option value='{"ingrediente_id": "{{ ingrediente.ingrediente_id }}", "quantidade": "{{ ingrediente.quantidade }}", "unidadeMedida": "{{ ingrediente.unidadeMedida }}", "nome": "{{ ingrediente.nome }}"}'>{{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}</option>
-            {% endfor %}
-        </select><br><br>
-        <button type="button" class="btn" id="removeIngrediente">Remover</button>
-        <label for="titulo">Título:</label><br>
-        <input type="text" id="titulo" name="titulo"><br><br>
-        <label for="tempo_preparo">Tempo de Preparo:</label><br>
-        <input type="text" id="tempo_preparo" name="tempo_preparo"><br><br>
-        <label for="texto">Texto:</label><br>
-        <textarea id="texto" name="texto"></textarea><br><br>
-        <button type="submit">Salvar</button>
-    </form>
+    <main class="content">
+        <!-- container receitas -->
+        <div class="box">
+            <section class="receitas-container">
+                <!-- menu container-->
+                <div class="menu-container">
+                    <form action="">
+                            <h2>Criar Receita</h2>
+                            <form id="addIngredienteForm">
+                            <div class="inputBox">
+                                <label for="novoIngrediente">Novo Ingrediente:</label>
+                                <input type="text" id="novoIngrediente" name="novoIngrediente" class="inputUser" placeholder="Ingrediente">
+                            </div><br>
+                            <div class="inputBox">
+                                <label for="quantidade">Quantidade:</label>
+                                <input type="number" id="quantidade" name="quantidade" class="inputUser" placeholder="Quantidade" step="0.01">
+                            </div><br>
+                            <div class="inputBox">
+                                <label for="unidadeMedida">Unidade de Medida:</label>
+                                <input type="text" id="unidadeMedida" name="unidadeMedida" class="inputUser" placeholder="Medida">
+                            </div>
+                                <button type="button" id="addIngrediente">Add Ingrediente</button><br><br>
+                            </form>
+                            <form id="edit_receita_form" method="post"  enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <label for="ingredientes">Ingredientes:</label><br>
+                                <select id="ingredientes" name="ingredientes" multiple>
+                                    {% for ingrediente in listaIngredientes %}
+                                        <option value='{"ingrediente_id": "{{ ingrediente.ingrediente_id }}", "quantidade": "{{ ingrediente.quantidade }}", "unidadeMedida": "{{ ingrediente.unidadeMedida }}", "nome": "{{ ingrediente.nome }}"}'>{{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}</option>
+                                    {% endfor %}
+                                </select><br>
+                                <button type="button" class="btn" id="removeIngrediente">Remover</button><br><br>
+                            <div class="inputBox">
+                                <label for="titulo">Título:</label><br>
+                                <input type="text" id="titulo" name="titulo" value="{{ receita.titulo }}" class="inputUser"><br><br>
+                                <label for="tempo_preparo">Tempo de Preparo:</label><br>
+                                <input type="text" id="tempo_preparo" name="tempo_preparo" class="inputUser" value="{{ receita.tempo_preparo }}"><br><br>
+                                <label for="texto">Texto:</label>
+                                <br>
+                                <textarea id="texto" name="texto" > {{ receita.texto }}</textarea><br><br>
+                                    <div class="inputBox">
+                                        <label for="image">Upload Imagem Principal:</label>
+                                        <input type="file" id="image" name="image" accept="image/*" class="inputUser">
+                                    </div>
+                            </div>
+                                <button type="submit">Salvar</button>
+                            </form>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="content-footer">
+        <p>
+            &copy; <span id="data"></span>
+            <span class="footer-logo">GuruGourmet</span>
+        </p>
+    </footer>
+    <!-- final footer -->
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

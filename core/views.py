@@ -1,8 +1,10 @@
+import datetime
 import json
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views import View
@@ -95,7 +97,7 @@ class UpdateReceitaView(View):
         receita.tempo_preparo = tempo_preparo_novo
         receita.titulo = titulo_novo
         receita.save()
-        #IngredienteReceita.objects.filter(receita_id=receita_id).delete()
+        IngredienteReceita.objects.filter(receita_id=receita_id).delete()
         lista_obj = []
         for ingrediente_lista in lista_ingredientes:
             ingrediente = IngredienteReceita()
@@ -115,5 +117,38 @@ class UpdateReceitaView(View):
 
 class CreateReceitaView(View):
     def get(self, request, **kwargs):
-        context = {}
         return render(self.request, "criar_receita.html")
+
+    def post(self, request, **kwargs):
+        texto_novo = self.request.POST.get("texto")
+        tempo_preparo_novo = self.request.POST.get("tempo_preparo")
+        titulo_novo = self.request.POST.get("titulo")
+        lista_ingredientes = self.request.POST.getlist("ingredientes")
+        receita = Receita()
+        if 'image' in self.request.FILES:
+            image = request.FILES['image']
+            fs = FileSystemStorage()
+            filename = fs.save(image.name, image)
+            image_path = fs.url(filename)
+            receita.imagem_principal = image_path
+        else:
+            receita.imagem_principal = ''
+        receita.texto = texto_novo
+        receita.tempo_preparo = tempo_preparo_novo
+        receita.titulo = titulo_novo
+        receita.usuario_id = titulo_novo
+        receita.status = True
+        receita.data_criacao = datetime.datetime.now()
+        receita.usuario_id = Usuario.objects.filter(email=self.request.user.email).first().id
+        receita.save()
+        lista_obj = []
+        for ingrediente_lista in lista_ingredientes:
+            ingrediente = IngredienteReceita()
+            ingrediente_lista = json.loads(ingrediente_lista)
+            ingrediente.ingrediente_id = ingrediente_lista.get("ingrediente_id")
+            ingrediente.receita_id = receita.id
+            ingrediente.quantidade = ingrediente_lista.get("quantidade")
+            ingrediente.unidade_medida = ingrediente_lista.get("unidade_medida")
+            lista_obj.append(ingrediente)
+        IngredienteReceita.objects.bulk_create(lista_obj)
+        return redirect('/')

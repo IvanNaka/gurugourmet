@@ -32,18 +32,9 @@ class Ingrediente(models.Model):
     nome = models.CharField(max_length=255)
     descricao = models.CharField(max_length=255)
 
-class Equipamento(models.Model):
-    nome = models.CharField(max_length=255)
-    descricao = models.CharField(max_length=255)
-
 class Administrador(models.Model):
     username = models.CharField(max_length=100)
     senha = models.CharField()
-class EquipamentoReceita(models.Model):
-    receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
-    equipamento = models.ForeignKey(Equipamento, on_delete=models.DO_NOTHING)
-    quantidade = models.DecimalField(max_digits=20, decimal_places=2)
-
 class IngredienteReceita(models.Model):
     receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
     ingrediente = models.ForeignKey(Ingrediente, on_delete=models.DO_NOTHING)
