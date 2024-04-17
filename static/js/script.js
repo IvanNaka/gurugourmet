@@ -97,7 +97,6 @@ function login() {
     xhr.send(formData);
 }
 function getListaIngredientes() {
-    debugger
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/ingredientes/', false); // Alterado para true para fazer uma requisição assíncrona
     xhr.send(); // Enviar a requisição
@@ -157,6 +156,67 @@ inputIngrediente.addEventListener('keyup', function(event) {
     }
 });
 
+
+document.getElementById('botaoPesquisar').addEventListener('click', function() {
+        // Get the list of ingredients
+        var lista_ingredientes = [];
+        var listaIngredientesElements = document.querySelectorAll('#listaIngredientes *');
+
+        listaIngredientesElements.forEach(function(element) {
+            var id = element.id; // Adjust this line if the id is stored in a different way
+            lista_ingredientes.push(id);
+        });
+
+        lista_ingredientes = lista_ingredientes.map(Number);
+        // Send the AJAX request
+        fetch('/receita/lista', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'lista_ingredientes': lista_ingredientes
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+        // Handle the response data here
+        console.log(data);
+
+        // Get the lista-container element
+        var listaContainer = document.querySelector('.lista-container');
+
+        // Clear the current content
+        listaContainer.innerHTML = '';
+
+        // Add new content from the fetched data
+        // This assumes that the data is an array of objects with 'titulo', 'tempo_preparo', and 'imagem_principal' properties
+        data.lista_receitas.forEach(function(receita) {
+            var receitaElement = document.createElement('a');
+            receitaElement.href = "/receita/" + receita.id;
+            receitaElement.className = "receita";
+
+            var imgElement = document.createElement('img');
+            imgElement.src = receita.imagem_principal;
+            imgElement.className = "img receita-img";
+            receitaElement.appendChild(imgElement);
+
+            var titleElement = document.createElement('h5');
+            titleElement.textContent = receita.titulo;
+            receitaElement.appendChild(titleElement);
+
+            var timeElement = document.createElement('p');
+            timeElement.textContent = "Tempo de Preparo: " + receita.tempo_preparo;
+            receitaElement.appendChild(timeElement);
+
+            listaContainer.appendChild(receitaElement);
+        });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+
 // ------------------------------------------------------------------------------------------
 // Formulario
 // ------------------------------------------------------------------------------------------
@@ -170,7 +230,7 @@ function submitForm(event) {
         const formData = new FormData(form);
 
         // Enviar os dados do formulário para o Django via AJAX
-        fetch("url_do_seu_endpoint_no_django/", {
+        fetch("receitas/", {
             method: "POST",
             body: formData
         })

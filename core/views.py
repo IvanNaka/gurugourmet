@@ -32,6 +32,14 @@ class GetIngredientesView(View):
         lista_ingredientes = list(Ingrediente.objects.order_by('nome').values())
         return JsonResponse({'sucess': True, 'lista_ingredientes': lista_ingredientes})
 
+class GetReceitasView(View):
+    def post(self, request, **kwargs):
+        lista_objs = []
+        lista_ingredientes = json.loads(self.request.body).get('lista_ingredientes')
+        lista_receitas = list(IngredienteReceita.objects.filter(ingrediente_id__in=lista_ingredientes).distinct('receita_id').values_list('receita_id', flat=True))
+        lista_objs = list(Receita.objects.filter(id__in=lista_receitas).values())
+        return JsonResponse({'sucess': True, 'lista_receitas': lista_objs})
+
 class LoginView(View):
     def get(self, request, **kwargs):
         return render(self.request, "login.html")
