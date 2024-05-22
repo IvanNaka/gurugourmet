@@ -120,7 +120,7 @@ class ReceitaView(View):
         else:
             messages.error(request, 'O texto do comentário não pode estar vazio.')
 
-        return redirect('receitas', receita_id=receita.id)
+        return redirect('receitas.html', receita_id=receita.id)
 
 class UpdateReceitaView(View):
     def get(self, request, **kwargs):
