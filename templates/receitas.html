@@ -68,17 +68,17 @@
             <div class="comentarios-container">
                 <h4>Comentários</h4>
                 <div class="comentarios-lista">
-                    {% for comentario in listaComentarios %}
+                    {% for comentario in comentarios %}
                         <div class="comentario">
-                            <p><strong>{{ comentario.usuario }}</strong> diz:</p>
+                            <p><strong>{{ comentario.usuario.username }}</strong> diz:</p>
                             <p>{{ comentario.texto }}</p>
                             <p class="data">{{ comentario.data }}</p>
                         </div>
                     {% endfor %}
                 </div>
                 <div class="comentarios-form">
-                    <h4>Deixe aqui seu comentário</h4>
-                    <form action="/adicionar_comentario/" method="POST">
+                    <h4>Deixe seu comentário</h4>
+                    <form action="" method="POST">
                         {% csrf_token %}
                         <textarea name="texto" rows="4" placeholder="Seu comentário..."></textarea>
                         <button type="submit" class="btn">Enviar</button>
