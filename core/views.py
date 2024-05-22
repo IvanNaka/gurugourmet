@@ -11,7 +11,7 @@ from django.views import View
 from django import forms
 from django.views.generic import TemplateView
 
-from core.models import Usuario, Receita, Ingrediente, IngredienteReceita
+from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Administrador
 
 
 class HomeView(View):
@@ -40,6 +40,9 @@ class GetReceitasView(View):
         lista_objs = list(Receita.objects.filter(id__in=lista_receitas).values())
         return JsonResponse({'sucess': True, 'lista_receitas': lista_objs})
 
+
+
+
 class LoginView(View):
     def get(self, request, **kwargs):
         return render(self.request, "login.html")
@@ -47,12 +50,25 @@ class LoginView(View):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
         usuario = Usuario.objects.filter(email=email, senha=senha).first()
-        user = authenticate(request, username=usuario.username, password=senha)
-        if usuario and user:
-            login(request, user)
-            request.session['username'] = usuario.username
-            return JsonResponse({'success': True})
-        return JsonResponse({'error': 'Usuario ou senha invalido!'}, status=500)
+        administrador = Administrador.objects.filter(email=email, senha=senha).first()
+        if usuario:
+            user = authenticate(request, username=usuario.email, password=senha)
+            if user:
+                login(request, user)
+                request.session['username'] = usuario.username
+                return JsonResponse({'success': True, 'admin': False})
+            else:
+                return JsonResponse({'error': 'Usuário ou senha inválido!'}, status=401)
+        elif administrador:
+            user = authenticate(request, username=administrador.email, password=senha)
+            if user:
+                login(request, user)
+                request.session['username'] = administrador.username
+                return JsonResponse({'success': True, 'admin': True})
+            else:
+                return JsonResponse({'error': 'Usuário ou senha inválido!'}, status=401)
+        else:
+            return JsonResponse({'error': 'Usuário não encontrado!'}, status=404)
 
 class CadastroView(View):
     def get(self, request, **kwargs):
@@ -121,8 +137,16 @@ class UpdateReceitaView(View):
         return redirect('/')
     def delete(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
-        IngredienteReceita.objects.filter(receita_id=receita_id).delete()
-        Receita.objects.filter(id=receita_id).delete()
+        receita = Receita.objects.filter(id=receita_id).first()
+        usuario = Usuario.objects.filter()
+        username_usuario = self.request.user.username
+        username_receita = receita.usuario.username
+        is_criador = username_usuario == username_receita
+        is_admin = usuario.is_admin
+        receita_id = kwargs.get('receita_id')
+        if is_criador or is_admin:
+            IngredienteReceita.objects.filter(receita_id=receita_id).delete()
+            Receita.objects.filter(id=receita_id).delete()
         return JsonResponse({'success': True})
 
 class CreateReceitaView(View):
