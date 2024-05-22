@@ -40,7 +40,6 @@
             <div class="hero-container">
                 <div class="hero-text">
                     <h4>{{ receita.titulo }}</h4>
-                    
                 </div>
                 <div><img src="{{receita.imagem_principal}}"></div>
             </div>
@@ -51,9 +50,7 @@
                     <h4>INGREDIENTES</h4>
                     <ul>
                         {% for ingrediente in listaIngredientes %}
-
                             <li>{{ingrediente.nome}}</li>
-
                         {% endfor %}
                     </ul>
                 </div>
@@ -64,8 +61,32 @@
                     <h5>{{receita.texto}}</h5>
                 </div> 
             </div>
-            </div>
+        </div>
         <!-- final header-->
+        <!-- comentários -->
+        <section class="comentarios">
+            <div class="comentarios-container">
+                <h4>Comentários</h4>
+                <div class="comentarios-lista">
+                    {% for comentario in listaComentarios %}
+                        <div class="comentario">
+                            <p><strong>{{ comentario.usuario }}</strong> diz:</p>
+                            <p>{{ comentario.texto }}</p>
+                            <p class="data">{{ comentario.data }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="comentarios-form">
+                    <h4>Deixe aqui seu comentário</h4>
+                    <form action="/adicionar_comentario/" method="POST">
+                        {% csrf_token %}
+                        <textarea name="texto" rows="4" placeholder="Seu comentário..."></textarea>
+                        <button type="submit" class="btn">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- final comentários -->
         <!-- container receitas -->
         <section class="receitas-container">
             <!-- menu container-->
