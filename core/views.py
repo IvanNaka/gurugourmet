@@ -11,7 +11,7 @@ from django.views import View
 from django import forms
 from django.views.generic import TemplateView
 
-from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Administrador
+from core.models import Usuario, Receita, Ingrediente, IngredienteReceita
 
 
 class HomeView(View):
@@ -50,25 +50,17 @@ class LoginView(View):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
         usuario = Usuario.objects.filter(email=email, senha=senha).first()
-        administrador = Administrador.objects.filter(email=email, senha=senha).first()
         if usuario:
             user = authenticate(request, username=usuario.email, password=senha)
+            is_admin = authenticate(request, is_admin=usuario.is_admin)
             if user:
                 login(request, user)
                 request.session['username'] = usuario.username
-                return JsonResponse({'success': True, 'admin': False})
+                return JsonResponse({'success': True, 'admin': is_admin})
             else:
                 return JsonResponse({'error': 'Usuário ou senha inválido!'}, status=401)
-        elif administrador:
-            user = authenticate(request, username=administrador.email, password=senha)
-            if user:
-                login(request, user)
-                request.session['username'] = administrador.username
-                return JsonResponse({'success': True, 'admin': True})
-            else:
-                return JsonResponse({'error': 'Usuário ou senha inválido!'}, status=401)
-        else:
-            return JsonResponse({'error': 'Usuário não encontrado!'}, status=404)
+
+        return JsonResponse({'error': 'Usuário não encontrado!'}, status=404)
 
 class CadastroView(View):
     def get(self, request, **kwargs):

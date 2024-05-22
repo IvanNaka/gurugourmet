@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="postgres@aws-0-sa-east-1.pooler.supabase.com [2]" uuid="221b2b9a-1be7-4e1c-bd7b-605c11e291aa">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

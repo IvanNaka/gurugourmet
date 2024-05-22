@@ -33,9 +33,6 @@ class Ingrediente(models.Model):
     nome = models.CharField(max_length=255)
     descricao = models.CharField(max_length=255)
 
-class Administrador(models.Model):
-    username = models.CharField(max_length=100)
-    senha = models.CharField()
 class IngredienteReceita(models.Model):
     receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
     ingrediente = models.ForeignKey(Ingrediente, on_delete=models.DO_NOTHING)
@@ -57,27 +54,27 @@ class Comentario(models.Model):
 class BanReceita(models.Model):
     status = models.BooleanField()
     receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
-    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    admin = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     data = models.DateTimeField()
     justificativa = models.TextField()
 
 class BanComentario(models.Model):
     status = models.BooleanField()
     comentario = models.ForeignKey(Comentario, on_delete=models.DO_NOTHING)
-    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    admin = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     data = models.DateTimeField()
     justificativa = models.TextField()
 
 class BanImagem(models.Model):
     status = models.BooleanField()
     imagem = models.ForeignKey(Imagem, on_delete=models.DO_NOTHING)
-    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    admin = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     data = models.DateTimeField()
     justificativa = models.TextField()
 
 class BanUsuario(models.Model):
     status = models.BooleanField()
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
-    admin = models.ForeignKey(Administrador, on_delete=models.DO_NOTHING)
+    #admin = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     data = models.DateTimeField()
     justificativa = models.TextField()
