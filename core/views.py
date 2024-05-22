@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.views import View
 from django import forms
 from django.views.generic import TemplateView
+from django.contrib import messages
 from pyexpat.errors import messages
 from django.utils import timezone
 from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comentario
@@ -106,10 +107,12 @@ class ReceitaView(View):
         texto = request.POST.get('texto')
 
         if texto:
+            usuario = Usuario.objects.get(id=request.user.id)
+
             Comentario.objects.create(
                 status=True,  # ou False, dependendo da sua lógica de aprovação
                 receita=receita,
-                usuario=request.user,
+                usuario=usuario,
                 data=timezone.now(),
                 texto=texto
             )
