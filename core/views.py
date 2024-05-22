@@ -2,7 +2,7 @@ import datetime
 import json
 
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
@@ -161,4 +161,9 @@ class CreateReceitaView(View):
             ingrediente.unidadeMedida = ingrediente_lista.get("unidadeMedida")
             lista_obj.append(ingrediente)
         IngredienteReceita.objects.bulk_create(lista_obj)
+        return redirect('/')
+
+class LogoutView(View):
+    def get(self, request, **kwargs):
+        logout(request)
         return redirect('/')

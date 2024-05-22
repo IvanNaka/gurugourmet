@@ -153,7 +153,7 @@ window.onload = function() {
                 <button type="button" class="btn nav-btn">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                
+
             </div>
             <!-- links -->
             <div class="nav-links">
@@ -167,10 +167,11 @@ window.onload = function() {
                     {% else %}
                         <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                        <button class="btn"><a href="/logout" style="color: white">Logout</a></button>
                     {% endif %}
                 </div>
             </div>
-            
+
         </div>
     </nav>
 
@@ -194,11 +195,11 @@ window.onload = function() {
                             <!--<h2>Editar Receita</h2>-->
                             <legend>Editar Receita</legend>
                             <form id="addIngredienteForm">
-                            <div class="inputBox">   
+                            <div class="inputBox">
                                 <label for="novoIngrediente">Novo Ingrediente:</label>
                                 <input type="text" id="novoIngrediente" name="novoIngrediente" class="inputUser" placeholder="Ingrediente">
                             </div><br>
-                            <div class="inputBox">    
+                            <div class="inputBox">
                                 <label for="quantidade">Quantidade:</label>
                                 <input type="number" id="quantidade" name="quantidade" class="inputUser" placeholder="Quantidade" step="0.01">
                             </div><br>
@@ -210,7 +211,7 @@ window.onload = function() {
                             </form>
                             <form id="edit_receita_form" method="post">
                                 {% csrf_token %}
-                            
+
                                 <label for="ingredientes">Ingredientes:</label><br>
                                 <select id="ingredientes" name="ingredientes" multiple>
                                     {% for ingrediente in listaIngredientes %}
@@ -218,7 +219,7 @@ window.onload = function() {
                                     {% endfor %}
                                 </select><br>
                                 <button type="button" class="btn" id="removeIngrediente">Remover</button><br><br>
-                            <div class="inputBox">    
+                            <div class="inputBox">
                                 <label for="titulo">Título:</label><br>
                                 <input type="text" id="titulo" name="titulo" value="{{ receita.titulo }}" class="inputUser"><br><br>
                                 <label for="tempo_preparo">Tempo de Preparo:</label><br>
