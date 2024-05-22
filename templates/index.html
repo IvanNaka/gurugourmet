@@ -38,7 +38,7 @@
                         </div>
                     {% else %}
                         <button class="btn" ><a href="/receita/create"  style="color: white">Nova receita</a></button>
-                        <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                        <a><i class="fa-solid fa-user"></i> {{ user.username }} {% if is_admin %} Admin {% endif %}</a>
                     {% endif %}
                 </div>
             </div>
