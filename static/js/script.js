@@ -23,14 +23,14 @@ data.textContent = anoAtual;
 // Ingredientes
 // ------------------------------------------------------------------------------------------
 
-function criarItemIngrediente(nomeIngrediente) {
+function criarItemIngrediente(ingrediente) {
     // Cria um novo elemento de div para o item de ingrediente
     const novoItem = document.createElement('div');
     novoItem.classList.add('ingredient-item');
-
     // Cria um novo elemento de span para o nome do ingrediente
     const novoTexto = document.createElement('span');
-    novoTexto.textContent = nomeIngrediente;
+    novoTexto.textContent = ingrediente.nome;
+    novoTexto.id = ingrediente.id;
     novoTexto.classList.add('ingredient-text'); // Adiciona uma classe ao elemento de texto
 
     // Cria um novo elemento de ícone do Font Awesome para representar o botão de remoção
@@ -51,17 +51,15 @@ function criarItemIngrediente(nomeIngrediente) {
 // Função para adicionar um ingrediente à lista
 function adicionarIngrediente() {
     // Tem que tirar isso aqui depois e colocar vindo do banco de dados
-    const ingredientesDisponiveis = ["Cenoura", "Tomate", "Cebola", "Alho", "Pimentão", "Batata", "Abobrinha", "Brócolis", "Couve", "Salsinha", "Cebolinha", "Manjericão", "Coentro", "Alface", "Rúcula", "Espinafre", "Milho", "Ervilha", "Feijão", "Grão-de-bico"];
-
+    var ingredientesDisponiveis = getListaIngredientes()
     // Captura o valor do input de ingrediente
     const inputIngrediente = document.querySelector('.ingredientInput');
     const novoIngrediente = inputIngrediente.value.trim();
-
-    // Verifica se o ingrediente está presente no banco de dados
-    if (verificarIngrediente(novoIngrediente, ingredientesDisponiveis)) {
+    // Verifica se o ingrediente está presente na lista de ingredientes4
+    var ingredienteObj = verificarIngrediente(novoIngrediente, ingredientesDisponiveis)
+    if (ingredienteObj) {
         // Cria um novo item de ingrediente
-        const novoItem = criarItemIngrediente(novoIngrediente);
-
+        const novoItem = criarItemIngrediente(ingredienteObj);
         // Adiciona o novo item de ingrediente à lista de ingredientes
         const listaIngredientes = document.getElementById('listaIngredientes');
         listaIngredientes.appendChild(novoItem);
@@ -98,7 +96,28 @@ function login() {
     };
     xhr.send(formData);
 }
+function getListaIngredientes() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/ingredientes/', false); // Alterado para true para fazer uma requisição assíncrona
+    xhr.send(); // Enviar a requisição
+    if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText).lista_ingredientes; // Corrigido o acesso ao responseText
+        return response; // Chama o callback com null para o erro e o response para os dados
+    } else {
+        console.log('Erro ao trazer ingredientes');
+        return []
+    }
+}
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 function cadastro() {
+    var email = document.getElementById('email').value;
+    if (!validateEmail(email)) {
+        document.getElementById('error-message').textContent = 'Endereço de e-mail inválido';
+        return;
+    }
     var formData = new FormData();
     formData.append('email', document.getElementById('email').value);
     formData.append('password', document.getElementById('password').value);
@@ -122,11 +141,15 @@ function cadastro() {
 // Função para verificar se o ingrediente está no banco de dados
 function verificarIngrediente(ingrediente, ingredientesDisponiveis) {
     // Verifica se o ingrediente está na lista de ingredientes disponíveis
-    if (ingredientesDisponiveis.includes(ingrediente)) {
-        return true; // Ingrediente encontrado
-    } else {
-        return false; // Ingrediente não encontrado
-    }
+    var ingredienteVerificado = null;
+    ingredientesDisponiveis.forEach(
+        (element) => {
+            if (element.nome === ingrediente) {
+                ingredienteVerificado = element
+            }
+        }
+    )
+    return ingredienteVerificado
 }
 
 // Adiciona um ouvinte de evento para o botão "Adicionar"
@@ -142,6 +165,67 @@ inputIngrediente.addEventListener('keyup', function(event) {
     }
 });
 
+
+document.getElementById('botaoPesquisar').addEventListener('click', function() {
+        // Get the list of ingredients
+        var lista_ingredientes = [];
+        var listaIngredientesElements = document.querySelectorAll('#listaIngredientes *');
+
+        listaIngredientesElements.forEach(function(element) {
+            var id = element.id; // Adjust this line if the id is stored in a different way
+            lista_ingredientes.push(id);
+        });
+
+        lista_ingredientes = lista_ingredientes.map(Number);
+        // Send the AJAX request
+        fetch('/receita/lista', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'lista_ingredientes': lista_ingredientes
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+        // Handle the response data here
+        console.log(data);
+
+        // Get the lista-container element
+        var listaContainer = document.querySelector('.lista-container');
+
+        // Clear the current content
+        listaContainer.innerHTML = '';
+
+        // Add new content from the fetched data
+        // This assumes that the data is an array of objects with 'titulo', 'tempo_preparo', and 'imagem_principal' properties
+        data.lista_receitas.forEach(function(receita) {
+            var receitaElement = document.createElement('a');
+            receitaElement.href = "/receita/" + receita.id;
+            receitaElement.className = "receita";
+
+            var imgElement = document.createElement('img');
+            imgElement.src = receita.imagem_principal;
+            imgElement.className = "img receita-img";
+            receitaElement.appendChild(imgElement);
+
+            var titleElement = document.createElement('h5');
+            titleElement.textContent = receita.titulo;
+            receitaElement.appendChild(titleElement);
+
+            var timeElement = document.createElement('p');
+            timeElement.textContent = "Tempo de Preparo: " + receita.tempo_preparo;
+            receitaElement.appendChild(timeElement);
+
+            listaContainer.appendChild(receitaElement);
+        });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+
 // ------------------------------------------------------------------------------------------
 // Formulario
 // ------------------------------------------------------------------------------------------
@@ -155,7 +239,7 @@ function submitForm(event) {
         const formData = new FormData(form);
 
         // Enviar os dados do formulário para o Django via AJAX
-        fetch("url_do_seu_endpoint_no_django/", {
+        fetch("receitas/", {
             method: "POST",
             body: formData
         })
@@ -198,3 +282,5 @@ function submitForm(event) {
         console.log("Formulário válido. Enviando dados...");
     }
 }
+
+

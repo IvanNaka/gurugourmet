@@ -9,6 +9,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
     <script src="{% static '/js/script.js' %}"></script>
+    <style>
+            button:active, button:visited {
+                color: inherit;
+            }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        var deleteButton = document.getElementById('deleteButton');
+        var receitaId = document.getElementById('deleteButton').value;
+        if(deleteButton) {
+            deleteButton.addEventListener('click', function() {
+                var receitaId = this.value;
+                fetch('/receita/edit/' + receitaId, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '/'; // Redirect to the homepage
+                    } else {
+                        console.error('Error deleting recipe');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    });
+
+    </script>
 </head>
 <body>
     <!-- nav -->
@@ -16,7 +52,7 @@
         <div class="nav-center">
             <!-- header -->
             <div class="nav-header">
-                <a href="../" class="nav-logo">
+                <a href="/.." class="nav-logo">
                     <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
                 </a>
                 <button type="button" class="btn nav-btn">
@@ -25,9 +61,21 @@
             </div>
             <!-- links -->
             <div class="nav-links">
-                <a href="/" class="nav-link" id="gg">GuruGourmet</a>
-                <div class="nav-link login-link">
-                    <a href="./login/" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="/.." class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link register-link">
+                    {% if not user.is_authenticated %}
+                        <a href="/cadastro" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
+                        <div class="nav-link login-link">
+                        <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                        </div>
+                    {% else %}
+                        <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
+                        {% if is_criador %}
+                            <button class="btn"><a href="/receita/edit/{{ receita.id }}"  style="color: white">Editar receita</a></button>
+                            <button id="deleteButton" class="btn" value="{{ receita.id }}">Apagar receita</button>
+                        {% endif %}
+                        <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -40,8 +88,9 @@
             <div class="hero-container">
                 <div class="hero-text">
                     <h4>{{ receita.titulo }}</h4>
+                    <img src="{{receita.imagem_principal }}" class="img receita-img" alt="">
                 </div>
-                <div><img src="{{receita.imagem_principal}}"></div>
+                <div></div>
             </div>
         </header>
         <div class="conteudo">
@@ -50,7 +99,9 @@
                     <h4>INGREDIENTES</h4>
                     <ul>
                         {% for ingrediente in listaIngredientes %}
-                            <li>{{ingrediente.nome}}</li>
+
+                             <option value='{"ingrediente_id": "{{ ingrediente.ingrediente_id }}", "quantidade": "{{ ingrediente.quantidade }}", "unidadeMedida": "{{ ingrediente.unidadeMedida }}", "nome": "{{ ingrediente.nome }}"}'>{{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}</option>
+
                         {% endfor %}
                     </ul>
                 </div>
@@ -59,43 +110,10 @@
                 <div class="card-text">
                     <h4>PASSOS</h4>
                     <h5>{{receita.texto}}</h5>
-                </div>
+                </div> 
             </div>
-        </div>
+            </div>
         <!-- final header-->
-        <!-- mensagens -->
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert {{ message.tags }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        <!-- final mensagens -->
-        <!-- comentários -->
-        <section class="comentarios">
-            <div class="comentarios-container">
-                <h4>Comentários</h4>
-                <div class="comentarios-lista">
-                    {% for comentario in comentarios %}
-                        <div class="comentario">
-                            <p><strong>{{ comentario.usuario.username }}</strong> diz:</p>
-                            <p>{{ comentario.texto }}</p>
-                            <p class="data">{{ comentario.data }}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="comentarios-form">
-                    <h4>Deixe seu comentário</h4>
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        <textarea name="texto" rows="4" placeholder="Seu comentário..."></textarea>
-                        <button type="submit" class="btn">Enviar</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-        <!-- final comentários -->
         <!-- container receitas -->
         <section class="receitas-container">
             <!-- menu container-->

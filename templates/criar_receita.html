@@ -66,7 +66,7 @@
         width: 1115px;
         height: 80px;
     }
-        button:active, button:visited {
+    button:active, button:visited {
     color: inherit;
 }
     </style>
@@ -78,6 +78,16 @@ window.onload = function() {
     var selectElement = document.getElementById('ingredientes');
 
     form.addEventListener('submit', function(event) {
+        var titulo = document.getElementById('titulo').value;
+        var tempo_preparo = document.getElementById('tempo_preparo').value;
+        var texto = document.getElementById('texto').value;
+        var image = document.getElementById('image').value;
+
+        if (!titulo || !tempo_preparo || !texto || !image) {
+            alert("Todos os campos devem ser preenchidos!");
+            event.preventDefault(); // Prevent form submission
+            return;
+        }
         for (var i = 0; i < selectElement.options.length; i++) {
             selectElement.options[i].selected = true;
         }
@@ -165,7 +175,7 @@ window.onload = function() {
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
-                        <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
+                        <button class="btn" style="color: white;"><a href="/receita/create">Nova receita</a></button>
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
                     {% endif %}
                 </div>
@@ -175,24 +185,13 @@ window.onload = function() {
     </nav>
 
     <main class="content">
-        <!-- header -->
-        <header class="hero">
-            <div class="hero-container">
-                <div class="hero-text">
-                    <h2>{{ receita.titulo }}</h2>
-                    <img src="{{receita.imagem_principal }}" class="img receita-img" alt="">
-                </div>
-            </div>
-        </header>
-        <!-- final header-->
         <!-- container receitas -->
         <div class="box">
             <section class="receitas-container">
                 <!-- menu container-->
                 <div class="menu-container">
                     <form action="">
-                            <!--<h2>Editar Receita</h2>-->
-                            <legend>Editar Receita</legend>
+                            <h2>Criar Receita</h2>
                             <form id="addIngredienteForm">
                             <div class="inputBox">
                                 <label for="novoIngrediente">Novo Ingrediente:</label>
@@ -208,7 +207,7 @@ window.onload = function() {
                             </div>
                                 <button type="button" id="addIngrediente">Add Ingrediente</button><br><br>
                             </form>
-                            <form id="edit_receita_form" method="post">
+                            <form id="edit_receita_form" method="post"  enctype="multipart/form-data">
                                 {% csrf_token %}
 
                                 <label for="ingredientes">Ingredientes:</label><br>
@@ -226,6 +225,10 @@ window.onload = function() {
                                 <label for="texto">Texto:</label>
                                 <br>
                                 <textarea id="texto" name="texto" > {{ receita.texto }}</textarea><br><br>
+                                    <div class="inputBox">
+                                        <label for="image">Upload Imagem Principal:</label>
+                                        <input type="file" id="image" name="image" accept="image/*" class="inputUser">
+                                    </div>
                             </div>
                                 <button type="submit">Salvar</button>
                             </form>

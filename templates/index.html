@@ -8,6 +8,11 @@
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href={% static 'css/styles.css' %}/>
+    <style>
+            button:active, button:visited {
+        color: inherit;
+    }
+    </style>
 </head>
 <body>
     <!-- nav -->
@@ -24,7 +29,7 @@
             </div>
             <!-- links -->
             <div class="nav-links">
-                <a href="/index" class="nav-link" id="gg">GuruGourmet</a>
+                <a href="/.." class="nav-link" id="gg">GuruGourmet</a>
                 <div class="nav-link register-link">
                     {% if not user.is_authenticated %}
                         <a href="/cadastro" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
@@ -32,9 +37,11 @@
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
+                        <button class="btn" ><a href="/receita/create"  style="color: white">Nova receita</a></button>
                         <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
                     {% endif %}
                 </div>
+            </div>
         </div>
     </nav>
     <!-- final nav -->
@@ -58,6 +65,9 @@
                 <h4>Ingredientes</h4>
                 <div class="menu-lista" id="listaIngredientes">
                     <!-- A lista de ingredientes vai ser adicionada dinamicamente aqui -->
+                </div>
+                <div class="botaoPesquisar" id="botaoPesquisar">
+                    <button class="btn" id="botaoPesquisar">Buscar</button>
                 </div>
             </div>
             <!-- final menu container-->
