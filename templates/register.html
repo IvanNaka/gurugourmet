@@ -38,17 +38,20 @@
         <header class="hero">
             <div class="hero-container">
                 <div class="hero-text">
-                     <h2>Cadastro</h2>
+                    <h2>Cadastro</h2>
                     <div id="error-message" style="color: red;"></div> <!-- Div para exibir mensagens de erro -->
-                    <input type="username" id="username" placeholder="Nome de usuário" required><br>
-                    <input type="email" id="email" placeholder="Email" required><br>
-                    <input type="password" id="password" placeholder="Senha" required><br>
-                    <input type="date" id="dataDescobrimentoBrasil" placeholder="data Descobrimento Brasil" required><br>
-                    <button onclick="cadastro()">Cadastrar</button>
+                    <form id="cadastro-form">
+                        <input type="text" id="username" name="username" placeholder="Nome de usuário" required><br>
+                        <input type="email" id="email" name="email" placeholder="Email" required><br>
+                        <input type="password" id="password" name="password" placeholder="Senha" required><br>
+                        <input type="date" id="dataDescobrimentoBrasil" name="dataDescobrimentoBrasil" placeholder="Data Descobrimento Brasil" required><br>
+                        <button type="button" onclick="cadastro()">Cadastrar</button>
+                    </form>
                 </div>
             </div>
         </header>        
         <!-- final header-->        
+    </main>
     <!-- footer -->
     <footer class="content-footer">
         <p>
@@ -57,7 +60,6 @@
         </p>
     </footer>
     <!-- final footer -->
-    <script src="{% static '/js/script.js' %}"></script>
-    </main>body>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

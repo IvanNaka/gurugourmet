@@ -10,7 +10,7 @@ class Usuario(models.Model):
     senha = models.CharField()
     cnpj = models.CharField(null=True)
     userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
-
+    is_admin = models.BooleanField(default=False)
 class Endereco(models.Model):
     rua = models.CharField(max_length=255)
     bairro = models.CharField(max_length=255)

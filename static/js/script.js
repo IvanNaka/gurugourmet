@@ -122,6 +122,7 @@ function cadastro() {
     formData.append('email', document.getElementById('email').value);
     formData.append('password', document.getElementById('password').value);
     formData.append('username', document.getElementById('username').value);
+    formData.append('date', document.getElementById('dataDescobrimentoBrasil').value);
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/cadastro/', true);
     xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Adicione o token CSRF, necessário para Django
