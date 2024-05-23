@@ -9,6 +9,8 @@ class Usuario(models.Model):
     senha = models.CharField()
     cnpj = models.CharField(null=True)
     userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    salarioMinimo = models.FloatField(default=0.0)
+
 
 class Endereco(models.Model):
     rua = models.CharField(max_length=255)
