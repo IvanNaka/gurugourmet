@@ -8,42 +8,12 @@
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
-    <script src="{% static '/js/script.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
     <style>
         button:active, button:visited {
             color: inherit;
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            var deleteButton = document.getElementById('deleteButton');
-            var receitaId = document.getElementById('deleteButton').value;
-            if (deleteButton) {
-                deleteButton.addEventListener('click', function() {
-                    var receitaId = this.value;
-                    fetch('/receita/edit/' + receitaId, {
-                        method: 'DELETE',
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            window.location.href = '/'; // Redirect to the homepage
-                        } else {
-                            console.error('Error deleting recipe');
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-                });
-            }
-        });
-    </script>
 </head>
 <body>
     <!-- nav -->
@@ -122,13 +92,18 @@
         <!-- comentários -->
         <section class="comentarios">
             <div class="comentarios-container">
+                <br>
                 <h4>Comentários</h4>
                 <div class="comentarios-lista">
                     {% for comentario in comentarios %}
                         <div class="comentario">
-                            <p><strong>{{ comentario.usuario.username }}</strong> diz:</p>
+                            <p><strong>{{ comentario.usuario.username }}</strong> comentou:</p>
                             <p>{{ comentario.texto }}</p>
                             <p class="data">{{ comentario.data }}</p>
+                            <form action="{% url 'denunciar_comentario' comentario.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn">Denunciar</button>
+                            </form>
                         </div>
                     {% endfor %}
                 </div>

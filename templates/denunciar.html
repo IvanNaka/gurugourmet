@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GuruGourmet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
+    <script src="{% static 'js/script.js' %}"></script>
+    <style>
+        button:active, button:visited {
+            color: inherit;
+        }
+    </style>
+</head>
+
+<body><!-- nav -->
+    <nav class="navbar">
+        <div class="nav-center">
+            <!-- header -->
+            <div class="nav-header">
+                <a href="/.." class="nav-logo">
+                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
+                </a>
+                <button type="button" class="btn nav-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- links -->
+            <div class="nav-links">
+                <a href="/.." class="nav-link" id="gg">GuruGourmet</a>
+                <div class="nav-link register-link">
+                    {% if not user.is_authenticated %}
+                        <a href="/cadastro" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
+                        <div class="nav-link login-link">
+                            <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                        </div>
+                    {% else %}
+                        <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
+                        {% if is_criador %}
+                            <button class="btn"><a href="/receita/edit/{{ receita.id }}" style="color: white">Editar receita</a></button>
+                            <button id="deleteButton" class="btn" value="{{ receita.id }}">Apagar receita</button>
+                        {% endif %}
+                        <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- final nav -->
+        <h1>Denunciar Comentário</h1>
+
+        <p>Se você deseja denunciar este comentário, por favor, explique o motivo abaixo:</p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <textarea name="motivo" rows="4" cols="50"></textarea>
+            <br>
+            <button type="submit">Denunciar</button>
+        </form>
+        {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <div>{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+</body>
+</html>

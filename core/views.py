@@ -9,10 +9,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.utils import timezone
 from django.views import View
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.urls import reverse
 from django import forms
 from django.views.generic import TemplateView
 
-from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comentario
+from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comentario, DenunciaComentario
 
 
 class HomeView(View):
@@ -202,3 +205,19 @@ class CreateReceitaView(View):
             lista_obj.append(ingrediente)
         IngredienteReceita.objects.bulk_create(lista_obj)
         return redirect('/')
+class DenunciarComentarioView(View):
+    def get(self, request, **kwargs):
+        return render(self.request, "denunciar.html")
+    @method_decorator(login_required)
+    def post(self, request, comentario_id):
+        comentario = get_object_or_404(Comentario, id=comentario_id)
+        usuario = request.user
+        motivo = request.POST.get('motivo')
+        denuncia = DenunciaComentario(comentario=comentario, usuario=usuario, motivo=motivo)
+        denuncia.save()
+        context = {
+            'receita_id': comentario.receita.id,
+        }
+        response = render(request, 'denunciar.html', context)
+        messages.success(request, 'Denúncia registrada com sucesso.')
+        return response
