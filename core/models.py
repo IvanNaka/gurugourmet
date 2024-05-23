@@ -5,6 +5,7 @@ from django.db import models
 
 class Usuario(models.Model):
     username = models.CharField(max_length=100)
+    dataDescobrimentoBrasil = models.DateField()
     email = models.CharField(max_length=255)
     senha = models.CharField()
     cnpj = models.CharField(null=True)

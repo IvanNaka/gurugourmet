@@ -61,14 +61,16 @@ class CadastroView(View):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
+        dataDescobrimentoBrasil = self.request.POST.get('dataDescobrimentoBrasil')
         if Usuario.objects.filter(email=email).exists():
             return JsonResponse({'error': 'Usuario ou senha invalido!'}, status=500)
-        userDjango = User.objects.create_user(username, email, senha)
+        userDjango = User.objects.create_user(username, email, senha, dataDescobrimentoBrasil)
         login(request, userDjango)
         usuarioNovo = Usuario()
         usuarioNovo.username = username
         usuarioNovo.senha = senha
         usuarioNovo.email = email
+        usuarioNovo.dataDescobrimentoBrasil = dataDescobrimentoBrasil
         usuarioNovo.userDjango = userDjango
         request.session['username'] = username
         usuarioNovo.save()
