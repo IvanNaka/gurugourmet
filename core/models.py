@@ -7,6 +7,8 @@ class Usuario(models.Model):
     username = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
     senha = models.CharField()
+    cnpj = models.CharField(null=True)
+    empresa = models.CharField(null=True)
     userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
 class Endereco(models.Model):
