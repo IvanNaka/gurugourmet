@@ -19,10 +19,12 @@ class HomeView(View):
         user = self.request.session.get('username')
         lista_receitas = Receita.objects.filter(status=True).all()[:6]
         lista_ingredientes = Ingrediente.objects.order_by('nome').all()
+        usuarios = Ingrediente.objects.values_list('usuario_id', flat=True)
         context = {}
         context['lista_receitas'] = lista_receitas
         context['lista_ingredientes'] = lista_ingredientes
         context['username'] = user
+        context['usuarios'] = usuarios
 
         return render(self.request, "index.html", context)
 

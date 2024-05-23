@@ -38,7 +38,7 @@
                         </div>
                     {% else %}
                         <button class="btn" ><a href="/receita/create"  style="color: white">Nova receita</a></button>
-                        <a><i class="fa-solid fa-user"></i> {{ user.username }} {% if Usuario.is_admin %} Admin {% endif %}</a>
+                        <a><i class="fa-solid fa-user"></i> {{ user.username }} {% if user.is_admin %} Admin {% endif %}</a>
                     {% endif %}
                 </div>
             </div>
@@ -88,6 +88,14 @@
         <!-- final container receitas -->
     </main>
     <!-- final main -->
+    <form method="post">
+        {% csrf_token %}
+            <select name="usuario">
+                {% for usuario_id in usuarios %}
+                    <option value="{{ usuario_id }}"></option>
+                {% endfor %}
+            </select>
+    </form>
     <!-- footer -->
     <footer class="content-footer">
         <p>

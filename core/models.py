@@ -33,6 +33,8 @@ class Receita(models.Model):
 class Ingrediente(models.Model):
     nome = models.CharField(max_length=255)
     descricao = models.CharField(max_length=255)
+    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+
 
 class IngredienteReceita(models.Model):
     receita = models.ForeignKey(Receita, on_delete=models.DO_NOTHING)
