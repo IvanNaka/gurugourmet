@@ -71,6 +71,7 @@ class CadastroView(View):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
+        salario_minimo = self.request.POST.get('salarioMinimo')
         if Usuario.objects.filter(email=email).exists():
             return JsonResponse({'error': 'Usuario ou senha invalido!'}, status=500)
         userDjango = User.objects.create_user(username, email, senha)
@@ -80,6 +81,7 @@ class CadastroView(View):
         usuarioNovo.senha = senha
         usuarioNovo.email = email
         usuarioNovo.userDjango = userDjango
+        usuarioNovo.salarioMinimo = salario_minimo
         request.session['username'] = username
         usuarioNovo.save()
         if not userDjango and not usuarioNovo:
