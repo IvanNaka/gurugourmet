@@ -84,16 +84,6 @@ class ReceitaView(View):
         receita_id = kwargs.get('receita_id')
         receita = Receita.objects.filter(id=receita_id).first()
         listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
-        username_usuario = self.request.user.username
-        username_receita = receita.usuario.username
-        is_criador = username_usuario == username_receita
-        context = {"receita": receita, "listaIngredientes": listaIngredientes, "is_criador": is_criador}
-        return render(self.request, "receitas.html", context)
-
-    def get(self, request, **kwargs):
-        receita_id = kwargs.get('receita_id')
-        receita = Receita.objects.filter(id=receita_id).first()
-        listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
         comentarios = Comentario.objects.filter(receita=receita, status=True)
         username_usuario = self.request.user.username
         username_receita = receita.usuario.username
@@ -109,14 +99,22 @@ class ReceitaView(View):
     def post(self, request, **kwargs):
         if not request.user.is_authenticated:
             messages.error(request, 'Você precisa estar logado para comentar.')
-            return redirect('login')
+            return render(request, "login.html")
+            #return redirect('login')
 
         receita_id = kwargs.get('receita_id')
         receita = get_object_or_404(Receita, id=receita_id)
         texto = request.POST.get('texto')
+        listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
+        comentarios = Comentario.objects.filter(receita=receita, status=True)
+        context = {
+            "receita": receita,
+            "listaIngredientes": listaIngredientes,
+            "comentarios": comentarios,
+        }
 
         if texto:
-            usuario = Usuario.objects.get(id=request.user.id)
+            usuario = Usuario.objects.get(userDjango=request.user)
 
             Comentario.objects.create(
                 status=True,  # ou False, dependendo da sua lógica de aprovação
@@ -128,8 +126,9 @@ class ReceitaView(View):
             messages.success(request, 'Seu comentário foi adicionado com sucesso.')
         else:
             messages.error(request, 'O texto do comentário não pode estar vazio.')
+        return render(self.request, "receitas.html", context)
+        #return redirect('receita', receita_id=receita.id)
 
-        return redirect('resceita', receita_id=receita.id)
 class UpdateReceitaView(View):
     def get(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
