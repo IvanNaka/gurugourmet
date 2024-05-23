@@ -72,6 +72,7 @@ class CadastroView(View):
         usuarioNovo.email = email
         usuarioNovo.dataDescobrimentoBrasil = dataDescobrimentoBrasil
         usuarioNovo.is_admin = False
+        salarioMinimo = 0
         usuarioNovo.userDjango = userDjango
         request.session['username'] = username
 
