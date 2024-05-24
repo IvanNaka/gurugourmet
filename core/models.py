@@ -78,3 +78,12 @@ class BanUsuario(models.Model):
     #admin = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     data = models.DateTimeField()
     justificativa = models.TextField()
+
+class DenunciaComentario(models.Model):
+    comentario = models.ForeignKey(Comentario, on_delete=models.DO_NOTHING)
+    usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    data = models.DateTimeField(auto_now_add=True)
+    motivo = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f'Denuncia feita por {self.usuario.username} no comentário {self.comentario.id}'
