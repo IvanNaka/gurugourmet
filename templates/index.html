@@ -37,8 +37,12 @@
                         <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
                         </div>
                     {% else %}
-                        <button class="btn" ><a href="/receita/create"  style="color: white">Nova receita</a></button>
-                        <a><i class="fa-solid fa-user"></i> {{ user.username }} {% if Usuario.is_admin %} Admin {% endif %}</a>
+                        <button class="btn" style="margin-right: 10px;" ><a href="/receita/create"  style="color: white">Nova receita</a></button>
+                        <button class="btn"><a href="/adm" style="color: white">Página ADM</a> </button>
+                        <a><i class="fa-solid fa-user"></i>
+                            {% if is_admin  %} Admin {% endif %}
+                            {{ user.username }}  
+                        </a>
                     {% endif %}
                 </div>
             </div>

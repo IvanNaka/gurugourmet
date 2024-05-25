@@ -15,18 +15,21 @@ from django.urls import reverse
 from django import forms
 from django.views.generic import TemplateView
 
-from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comentario, DenunciaComentario
+from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comentario, DenunciaComentario, BanImagem, \
+    BanUsuario
 
 
 class HomeView(View):
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
+        is_admin = Usuario.objects.filter(username=user).first().is_admin
         lista_receitas = Receita.objects.filter(status=True).all()[:6]
         lista_ingredientes = Ingrediente.objects.order_by('nome').all()
         context = {}
         context['lista_receitas'] = lista_receitas
         context['lista_ingredientes'] = lista_ingredientes
         context['username'] = user
+        context['is_admin'] = is_admin
 
         return render(self.request, "index.html", context)
 
@@ -56,7 +59,7 @@ class LoginView(View):
         usuario = Usuario.objects.filter(email=email, senha=senha).first()
         if usuario:
             user = authenticate(request, username=usuario.email, password=senha)
-            is_admin = authenticate(request, is_admin=usuario.is_admin)
+            is_admin = authenticate(request, is_admin=usuario.is_admin, null=True)
             if user:
                 login(request, user)
                 request.session['username'] = usuario.username
@@ -99,11 +102,13 @@ class ReceitaView(View):
         username_usuario = self.request.user.username
         username_receita = receita.usuario.username
         is_criador = username_usuario == username_receita
+        is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
         context = {
             "receita": receita,
             "listaIngredientes": listaIngredientes,
             "comentarios": comentarios,
-            "is_criador": is_criador
+            "is_criador": is_criador,
+            "is_admin": is_admin
         }
         return render(self.request, "receitas.html", context)
 
@@ -177,7 +182,7 @@ class UpdateReceitaView(View):
         username_usuario = self.request.user.username
         username_receita = receita.usuario.username
         is_criador = username_usuario == username_receita
-        is_admin = usuario.is_admin
+        is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
         receita_id = kwargs.get('receita_id')
         if is_criador or is_admin:
             IngredienteReceita.objects.filter(receita_id=receita_id).delete()
@@ -237,3 +242,20 @@ class DenunciarComentarioView(View):
         response = render(request, 'denunciar.html', context)
         messages.success(request, 'Denúncia registrada com sucesso.')
         return response
+
+
+class PaginaAdmView(View):
+    @method_decorator(login_required)
+    def get(self, request, **kwargs):
+        user = self.request.session.get('username')
+        is_admin = Usuario.objects.filter(username=user).first().is_admin
+        if is_admin:
+            context = {}
+            context['username'] = user
+            context['is_admin'] = is_admin
+            return render(self.request, 'pagina_adm.html')
+        else:
+            return render(request, 'index.html')
+
+
+
