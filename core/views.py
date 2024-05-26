@@ -22,16 +22,18 @@ from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comen
 class HomeView(View):
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
-        is_admin = Usuario.objects.filter(username=user).first().is_admin
+        usuario = Usuario.objects.filter(username=user).first()
+        is_admin = usuario.is_admin if usuario else False
         lista_receitas = Receita.objects.filter(status=True).all()[:6]
         lista_ingredientes = Ingrediente.objects.order_by('nome').all()
-        context = {}
-        context['lista_receitas'] = lista_receitas
-        context['lista_ingredientes'] = lista_ingredientes
-        context['username'] = user
-        context['is_admin'] = is_admin
-
+        context = {
+            'lista_receitas': lista_receitas,
+            'lista_ingredientes': lista_ingredientes,
+            'username': user,
+            'is_admin': is_admin,
+        }
         return render(self.request, "index.html", context)
+
 
 
 class GetIngredientesView(View):
@@ -102,7 +104,8 @@ class ReceitaView(View):
         username_usuario = self.request.user.username
         username_receita = receita.usuario.username
         is_criador = username_usuario == username_receita
-        is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        usuario = Usuario.objects.filter(username=username_usuario).first()
+        is_admin = usuario.is_admin if usuario else False
         context = {
             "receita": receita,
             "listaIngredientes": listaIngredientes,
@@ -111,6 +114,7 @@ class ReceitaView(View):
             "is_admin": is_admin
         }
         return render(self.request, "receitas.html", context)
+
 
     def post(self, request, **kwargs):
         if not request.user.is_authenticated:
@@ -248,14 +252,17 @@ class PaginaAdmView(View):
     @method_decorator(login_required)
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
-        is_admin = Usuario.objects.filter(username=user).first().is_admin
+        usuario = Usuario.objects.filter(username=user).first()
+        is_admin = usuario.is_admin if usuario else False
         if is_admin:
-            context = {}
-            context['username'] = user
-            context['is_admin'] = is_admin
-            return render(self.request, 'pagina_adm.html')
+            context = {
+                'username': user,
+                'is_admin': is_admin
+            }
+            return render(self.request, 'pagina_adm.html', context)
         else:
             return render(request, 'index.html')
+
 
 
 
