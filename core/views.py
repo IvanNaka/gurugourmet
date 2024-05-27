@@ -2,7 +2,7 @@ import datetime
 import json
 
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
@@ -257,5 +257,7 @@ class PaginaAdmView(View):
         else:
             return render(request, 'index.html')
 
-
-
+class LogoutView(View):
+    def get(self, request, **kwargs):
+        logout(request)
+        return redirect('/')
