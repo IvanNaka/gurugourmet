@@ -255,13 +255,20 @@ class PaginaAdmView(View):
         usuario = Usuario.objects.filter(username=user).first()
         is_admin = usuario.is_admin if usuario else False
         if is_admin:
+            usuarios = Usuario.objects.all()
+            denuncias = DenunciaComentario.objects.all()  # Busca todas as denúncias
             context = {
                 'username': user,
-                'is_admin': is_admin
+                'is_admin': is_admin,
+                'usuarios': usuarios,
+                'denuncias': denuncias,  # Adiciona as denúncias ao contexto
             }
             return render(self.request, 'pagina_adm.html', context)
         else:
             return render(request, 'index.html')
+
+
+
 
 
 
