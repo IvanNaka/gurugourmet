@@ -38,7 +38,7 @@
                         </div>
                     {% else %}
                         <button class="btn" style="margin-right: 10px;" ><a href="/receita/create"  style="color: white">Nova receita</a></button>
-                        <button class="btn"><a href="/adm" style="color: white">Página ADM</a> </button>
+                        {% if is_admin  %}<button class="btn"><a href="/adm" style="color: white">Página ADM</a> </button>{% endif %}
                         <a><i class="fa-solid fa-user"></i>
                             {% if is_admin  %} Admin {% endif %}
                             {{ user.username }}

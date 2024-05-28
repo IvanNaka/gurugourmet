@@ -28,13 +28,14 @@ class HomeView(View):
             is_admin = False
         lista_receitas = Receita.objects.filter(status=True).all()[:6]
         lista_ingredientes = Ingrediente.objects.order_by('nome').all()
-        context = {}
-        context['lista_receitas'] = lista_receitas
-        context['lista_ingredientes'] = lista_ingredientes
-        context['username'] = user
-        context['is_admin'] = is_admin
-
+        context = {
+            'lista_receitas': lista_receitas,
+            'lista_ingredientes': lista_ingredientes,
+            'username': user,
+            'is_admin': is_admin,
+        }
         return render(self.request, "index.html", context)
+
 
 
 class GetIngredientesView(View):
@@ -117,6 +118,7 @@ class ReceitaView(View):
             "is_admin": is_admin
         }
         return render(self.request, "receitas.html", context)
+
 
     def post(self, request, **kwargs):
         if not request.user.is_authenticated:
@@ -256,12 +258,18 @@ class PaginaAdmView(View):
     @method_decorator(login_required)
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
-        is_admin = Usuario.objects.filter(username=user).first().is_admin
+        usuario = Usuario.objects.filter(username=user).first()
+        is_admin = usuario.is_admin if usuario else False
         if is_admin:
-            context = {}
-            context['username'] = user
-            context['is_admin'] = is_admin
-            return render(self.request, 'pagina_adm.html')
+            usuarios = Usuario.objects.all()
+            denuncias = DenunciaComentario.objects.all()  # Busca todas as denúncias
+            context = {
+                'username': user,
+                'is_admin': is_admin,
+                'usuarios': usuarios,
+                'denuncias': denuncias,  # Adiciona as denúncias ao contexto
+            }
+            return render(self.request, 'pagina_adm.html', context)
         else:
             return render(request, 'index.html')
 

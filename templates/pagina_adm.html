@@ -38,5 +38,27 @@
             </div>
         </div>
     </nav>
+    <div class="menu-container">
+        <h2>Usuários</h2>
+        <ul>
+            {% for usuario in usuarios %}
+                <li>{{ usuario.username }}</li>
+            {% empty %}
+                <li>Nenhum usuário encontrado.</li>
+            {% endfor %}
+        </ul>
+
+    <!-- Objetos da classe DenunciarComentarioView -->
+        <h2>Denúncias de Comentários</h2>
+        <ul>
+            {% for denuncia in denuncias %}
+                <li><strong>Usuário:</strong> {{ denuncia.usuario.username }}<br>
+                    <strong>Comentário:</strong> {{ denuncia.comentario.id }}<br>
+                <strong>Motivo:</strong> {{ denuncia.motivo }}<br></li>
+            {% empty %}
+                <li>Nenhuma denúncia de comentário encontrada.</li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
