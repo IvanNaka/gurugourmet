@@ -83,7 +83,7 @@ body {
 p {
     margin-top: 0;
     margin-bottom: 1.5rem;
-    max-width: 40em;
+    overflow-wrap: break-word;
 }
 h1,
 h2,
@@ -300,7 +300,9 @@ ul {
 .show-links {
     height: 220px;
 }
-
+.button{
+    text-align: center;
+}
 .nav-link {
     display: block;
     text-align: center;
