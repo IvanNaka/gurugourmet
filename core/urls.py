@@ -34,5 +34,7 @@ urlpatterns = [
     path('receita/lista', csrf_exempt(views.GetReceitasView.as_view())),
     path('adm/', csrf_exempt(views.PaginaAdmView.as_view())),
     path('denunciar/<int:comentario_id>', csrf_exempt(views.DenunciarComentarioView.as_view()), name='denunciar_comentario'),
+    path('adm/delete/usuario/<int:usuario_id>', csrf_exempt(views.DeleteUsuarioView.as_view()), name='delete_usuario'),
+    path('adm/delete/comentario/<int:comentario_id>', csrf_exempt(views.DeleteComentarioView.as_view()), name='delete_comentario'),
     path('logout/', csrf_exempt(views.LogoutView.as_view())),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

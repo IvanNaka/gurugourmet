@@ -281,10 +281,14 @@ class ConfirmarDeleteView(View):
         username_usuario = self.request.user.username
         username_receita = receita.usuario.username
         is_criador = username_usuario == username_receita
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
         context = {
             "receita": receita,
         }
-        if not is_criador:
+        if not (is_criador or is_admin):
             return redirect('/')
         return render(self.request, "deletar_receita.html", context)
 
@@ -309,6 +313,71 @@ class ConfirmarDeleteView(View):
             Receita.objects.filter(id=receita_id).delete()
         messages.success(request, 'Receita apagada com sucesso!')
         return render(request, 'deletar_receita.html', context)
+
+class DeleteUsuarioView(View):
+    def get(self, request, **kwargs):
+        usuario_id = kwargs.get('usuario_id')
+        usuario = Usuario.objects.filter(id=usuario_id).first()
+        username_usuario = self.request.user.username
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
+        context = {
+            "usuario": usuario,
+        }
+        if not is_admin:
+            return redirect('/')
+        return render(self.request, "deletar_usuario.html", context)
+
+    def post(self, request, **kwargs):
+        usuario_id = kwargs.get('usuario_id')
+        usuario = Usuario.objects.filter(id=usuario_id).first()
+        username_usuario = self.request.user.username
+        context = {
+            "usuario_id": usuario_id,
+        }
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
+        if is_admin:
+            usuario.delete()
+        messages.success(request, 'Usuario apagado com sucesso!')
+        return render(request, 'deletar_usuario.html', context)
+
+class DeleteComentarioView(View):
+    def get(self, request, **kwargs):
+        comentario_id = kwargs.get('comentario_id')
+        comentario = Comentario.objects.filter(id=comentario_id).first()
+        username_usuario = self.request.user.username
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
+        context = {
+            "comentario": comentario,
+        }
+        if not is_admin:
+            return redirect('/')
+        return render(self.request, "deletar_comentario.html", context)
+
+    def post(self, request, **kwargs):
+        comentario_id = kwargs.get('comentario_id')
+        comentario = Comentario.objects.filter(id=comentario_id).first()
+        username_usuario = self.request.user.username
+        context = {
+            "comentario_id": comentario_id,
+        }
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
+        if is_admin:
+            comentario.delete()
+        messages.success(request, 'Comentário apagado com sucesso!')
+        return render(request, 'deletar_comentario.html', context)
+
 class LogoutView(View):
     def get(self, request, **kwargs):
         logout(request)

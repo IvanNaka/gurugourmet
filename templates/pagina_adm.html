@@ -8,6 +8,7 @@
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
+
     <style>
             button:active, button:visited {
         color: inherit;
@@ -40,15 +41,15 @@
     </nav>
     <div class="menu-container">
         <h2>Usuários</h2>
-        <ul> <!-- Estilo tudo fudido por conveniencia, dps arruma -->
-            <select id = 'user_lista' style="    width: 200px;padding: 10px;border: 1px solid #ccc;
-            border-radius: 4px;background-color: #fff;font-size: 16px;color: #333;">
-            {% for usuario in usuarios %}
-                <option value="{{ usuario.username }}">{{ usuario.username }} </option>
-            {% empty %}
-                <li>Nenhum usuário encontrado.</li>
-            {% endfor %}
-            </select>
+        <ul>
+        {% for usuario in usuarios %}
+            <li id = 'lista_adm'>
+                {{ usuario.username }} id = {{ usuario.id }}
+                <a href="{% url 'delete_usuario' usuario.id %}" class="btn">Deletar</a>
+            </li>
+        {% empty %}
+            <li>Nenhum usuário encontrado.</li>
+        {% endfor %}
 
         </ul>
 
@@ -58,7 +59,9 @@
             {% for denuncia in denuncias %}
                 <li><strong>Usuário:</strong> {{ denuncia.usuario.username }}<br>
                     <strong>Comentário:</strong> {{ denuncia.comentario.id }}<br>
-                <strong>Motivo:</strong> {{ denuncia.motivo }}<br></li>
+                    <strong>Motivo:</strong> {{ denuncia.motivo }}<br>
+                    <a href="{% url 'delete_comentario' denuncia.comentario.id %}" class="btn">Deletar</a>
+                </li>
             {% empty %}
                 <li>Nenhuma denúncia de comentário encontrada.</li>
             {% endfor %}

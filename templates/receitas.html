@@ -79,7 +79,7 @@
                     </div>
                 {% else %}
                     <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
-                    {% if is_criador %}
+                    {% if is_criador or is_admin %}
                         <button class="btn"><a href="/receita/edit/{{ receita.id }}" style="color: white">Editar
                             receita</a></button>
                         <button id="deleteButton" class="btn"><a href="/receita/delete/{{ receita.id }}"

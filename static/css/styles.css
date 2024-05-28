@@ -451,6 +451,7 @@ ul {
     flex-direction: column;
     padding-bottom: 1rem;
 }
+
 .lista-container {
     display: grid;
     gap: 2rem 1rem;
