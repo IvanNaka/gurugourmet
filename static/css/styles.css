@@ -514,3 +514,8 @@ ul {
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
+.lista-container.adm {
+    background: yellow;
+    padding: 1rem;
+    border-radius: var(--borderRadius);
+}
