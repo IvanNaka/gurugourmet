@@ -95,7 +95,19 @@ class CadastroView(View):
             return JsonResponse({'error': 'Erro ao cadastrar usuário!'})
         login(request, userDjango)
         return JsonResponse({'success': True})
-
+class MudarSenhaView(View):
+    def get(self, request, **kwargs):
+        return render(self.request, "register.html")
+    def post(self, request, **kwargs):
+        email = self.request.POST.get('email')
+        username = self.request.POST.get('username')
+        senhaNova = self.request.POST.get('senhaNova')
+        if Usuario.objects.filter(email=email, username=username).exists():
+            return JsonResponse({'error': 'Usuario ou email invalido!'}, status=500)
+        userDjango = User.objects.filter(username=username).first()
+        userDjango.set_password(senhaNova)
+        login(request, userDjango)
+        return JsonResponse({'success': True})
 
 class ReceitaView(View):
     def get(self, request, **kwargs):
