@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href={% static 'css/styles.css' %}/>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
     <style>
             button:active, button:visited {
         color: inherit;
@@ -21,7 +21,7 @@
             <!-- header -->
             <div class="nav-header">
                 <a href="" class="nav-logo">
-                    <img src={% static 'assets/logo.svg'%} alt="GuruGourmet">
+                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
                 </a>
                 <button type="button" class="btn nav-btn">
                     <i class="fa-solid fa-bars"></i>
@@ -40,12 +40,16 @@
     </nav>
     <div class="menu-container">
         <h2>Usuários</h2>
-        <ul>
+        <ul> <!-- Estilo tudo fudido por conveniencia, dps arruma -->
+            <select id = 'user_lista' style="    width: 200px;padding: 10px;border: 1px solid #ccc;
+            border-radius: 4px;background-color: #fff;font-size: 16px;color: #333;">
             {% for usuario in usuarios %}
-                <li>{{ usuario.username }}</li>
+                <option value="{{ usuario.username }}">{{ usuario.username }} </option>
             {% empty %}
                 <li>Nenhum usuário encontrado.</li>
             {% endfor %}
+            </select>
+
         </ul>
 
     <!-- Objetos da classe DenunciarComentarioView -->
