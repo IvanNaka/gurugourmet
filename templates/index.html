@@ -41,8 +41,9 @@
                         {% if is_admin  %}<button class="btn"><a href="/adm" style="color: white">Página ADM</a> </button>{% endif %}
                         <a><i class="fa-solid fa-user"></i>
                             {% if is_admin  %} Admin {% endif %}
-                            {{ user.username }}  
+                            {{ user.username }}
                         </a>
+                        <button class="btn"><a href="/logout" style="color: white">Logout</a></button>
                     {% endif %}
                 </div>
             </div>

@@ -112,10 +112,19 @@ function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+
+function validatePassword(password) {
+    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+}
 function cadastro() {
     var email = document.getElementById('email').value;
     if (!validateEmail(email)) {
         document.getElementById('error-message').textContent = 'Endereço de e-mail inválido';
+        return;
+    }
+    if (!validatePassword(document.getElementById('password').value)) {
+        document.getElementById('error-message').textContent = 'A senha deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial';
         return;
     }
     var formData = new FormData();
@@ -136,7 +145,8 @@ function cadastro() {
     };
     xhr.send(formData);
 }
-
+var toastEl = document.getElementById('successToast');
+var toast = new bootstrap.Toast(toastEl);
 
 // Função para verificar se o ingrediente está no banco de dados
 function verificarIngrediente(ingrediente, ingredientesDisponiveis) {

@@ -2,7 +2,7 @@ import datetime
 import json
 
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
@@ -22,8 +22,10 @@ from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comen
 class HomeView(View):
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
-        usuario = Usuario.objects.filter(username=user).first()
-        is_admin = usuario.is_admin if usuario else False
+        if user:
+            is_admin = Usuario.objects.filter(username=user).first().is_admin
+        else:
+            is_admin = False
         lista_receitas = Receita.objects.filter(status=True).all()[:6]
         lista_ingredientes = Ingrediente.objects.order_by('nome').all()
         context = {
@@ -104,8 +106,10 @@ class ReceitaView(View):
         username_usuario = self.request.user.username
         username_receita = receita.usuario.username
         is_criador = username_usuario == username_receita
-        usuario = Usuario.objects.filter(username=username_usuario).first()
-        is_admin = usuario.is_admin if usuario else False
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
         context = {
             "receita": receita,
             "listaIngredientes": listaIngredientes,
@@ -182,11 +186,13 @@ class UpdateReceitaView(View):
     def delete(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
         receita = Receita.objects.filter(id=receita_id).first()
-        usuario = Usuario.objects.filter()
         username_usuario = self.request.user.username
         username_receita = receita.usuario.username
         is_criador = username_usuario == username_receita
-        is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
         receita_id = kwargs.get('receita_id')
         if is_criador or is_admin:
             IngredienteReceita.objects.filter(receita_id=receita_id).delete()
@@ -268,8 +274,42 @@ class PaginaAdmView(View):
             return render(request, 'index.html')
 
 
+class ConfirmarDeleteView(View):
+    def get(self, request, **kwargs):
+        receita_id = kwargs.get('receita_id')
+        receita = Receita.objects.filter(id=receita_id).first()
+        username_usuario = self.request.user.username
+        username_receita = receita.usuario.username
+        is_criador = username_usuario == username_receita
+        context = {
+            "receita": receita,
+        }
+        if not is_criador:
+            return redirect('/')
+        return render(self.request, "deletar_receita.html", context)
 
-
-
-
-
+    def post(self, request, **kwargs):
+        receita_id = kwargs.get('receita_id')
+        receita = Receita.objects.filter(id=receita_id).first()
+        username_usuario = self.request.user.username
+        username_receita = receita.usuario.username
+        is_criador = username_usuario == username_receita
+        context = {
+            "receita": receita,
+        }
+        if username_usuario:
+            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+        else:
+            is_admin = False
+        receita_id = kwargs.get('receita_id')
+        if is_criador or is_admin:
+            DenunciaComentario.objects.filter(comentario__receita=receita_id).delete()
+            Comentario.objects.filter(receita_id=receita_id).delete()
+            IngredienteReceita.objects.filter(receita_id=receita_id).delete()
+            Receita.objects.filter(id=receita_id).delete()
+        messages.success(request, 'Receita apagada com sucesso!')
+        return render(request, 'deletar_receita.html', context)
+class LogoutView(View):
+    def get(self, request, **kwargs):
+        logout(request)
+        return redirect('/')

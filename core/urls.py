@@ -21,7 +21,6 @@ from django.views.decorators.csrf import csrf_exempt
 from GuruGourmet import settings
 from core import views
 from django.urls import path
-from core.views import PaginaAdmView
 
 urlpatterns = [
     path('', views.HomeView.as_view()),
@@ -30,9 +29,10 @@ urlpatterns = [
     path('receita/<int:receita_id>', csrf_exempt(views.ReceitaView.as_view())),
     path('receita/edit/<int:receita_id>', csrf_exempt(views.UpdateReceitaView.as_view())),
     path('receita/create', csrf_exempt(views.CreateReceitaView.as_view())),
+    path('receita/delete/<int:receita_id>', csrf_exempt(views.ConfirmarDeleteView.as_view())),
     path('ingredientes/', csrf_exempt(views.GetIngredientesView.as_view())),
     path('receita/lista', csrf_exempt(views.GetReceitasView.as_view())),
     path('adm/', csrf_exempt(views.PaginaAdmView.as_view())),
     path('denunciar/<int:comentario_id>', csrf_exempt(views.DenunciarComentarioView.as_view()), name='denunciar_comentario'),
-    path('adm/', PaginaAdmView.as_view(), name='pagina_adm'),
+    path('logout/', csrf_exempt(views.LogoutView.as_view())),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
