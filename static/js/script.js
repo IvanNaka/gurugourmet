@@ -173,8 +173,7 @@ function reset() {
     };
     xhr.send(formData);
 }
-var toastEl = document.getElementById('successToast');
-var toast = new bootstrap.Toast(toastEl);
+
 
 // Função para verificar se o ingrediente está no banco de dados
 function verificarIngrediente(ingrediente, ingredientesDisponiveis) {

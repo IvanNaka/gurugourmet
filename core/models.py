@@ -6,9 +6,9 @@ from django.db import models
 class Usuario(models.Model):
     username = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
-    senha = models.CharField(max_length=255)
     userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     is_admin = models.BooleanField(default=False)
+    status = models.BooleanField(default=False)
 
 class Endereco(models.Model):
     rua = models.CharField(max_length=255)
