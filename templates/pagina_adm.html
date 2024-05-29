@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href={% static 'css/styles.css' %}/>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
+
     <style>
             button:active, button:visited {
         color: inherit;
@@ -21,7 +22,7 @@
             <!-- header -->
             <div class="nav-header">
                 <a href="" class="nav-logo">
-                    <img src={% static 'assets/logo.svg'%} alt="GuruGourmet">
+                    <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
                 </a>
                 <button type="button" class="btn nav-btn">
                     <i class="fa-solid fa-bars"></i>
@@ -38,14 +39,18 @@
             </div>
         </div>
     </nav>
-    <div class="menu-container">
+    <div class="form">
         <h2>Usuários</h2>
         <ul>
-            {% for usuario in usuarios %}
-                <li>{{ usuario.username }}</li>
-            {% empty %}
-                <li>Nenhum usuário encontrado.</li>
-            {% endfor %}
+        {% for usuario in usuarios %}
+            <li id = 'lista_adm'>
+                {{ usuario.username }} id = {{ usuario.id }}
+                <a href="{% url 'delete_usuario' usuario.id %}" class="btn">Deletar</a>
+            </li>
+        {% empty %}
+            <li>Nenhum usuário encontrado.</li>
+        {% endfor %}
+
         </ul>
 
     <!-- Objetos da classe DenunciarComentarioView -->
@@ -54,7 +59,9 @@
             {% for denuncia in denuncias %}
                 <li><strong>Usuário:</strong> {{ denuncia.usuario.username }}<br>
                     <strong>Comentário:</strong> {{ denuncia.comentario.id }}<br>
-                <strong>Motivo:</strong> {{ denuncia.motivo }}<br></li>
+                    <strong>Motivo:</strong> {{ denuncia.motivo }}<br>
+                    <a href="{% url 'delete_comentario' denuncia.comentario.id %}" class="btn">Deletar</a>
+                </li>
             {% empty %}
                 <li>Nenhuma denúncia de comentário encontrada.</li>
             {% endfor %}

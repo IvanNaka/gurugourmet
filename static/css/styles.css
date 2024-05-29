@@ -451,6 +451,7 @@ ul {
     flex-direction: column;
     padding-bottom: 1rem;
 }
+
 .lista-container {
     display: grid;
     gap: 2rem 1rem;
@@ -512,4 +513,9 @@ ul {
     .lista-container {
         grid-template-columns: 1fr 1fr 1fr;
     }
+}
+.lista-container.adm {
+    background: yellow;
+    padding: 1rem;
+    border-radius: var(--borderRadius);
 }

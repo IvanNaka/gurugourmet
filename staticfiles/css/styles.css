@@ -513,3 +513,20 @@ ul {
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
+#user_lista {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+}
+#user_lista option {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+}
