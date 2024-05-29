@@ -138,20 +138,21 @@
                         <p style="width: 100%;"><strong>{{ comentario.usuario.username }}</strong> comentou:</p>
                         <p style="width: 100%;">{{ comentario.texto }}</p>
                         <p class="data">{{ comentario.data }}</p>
-                        <form action="{% url 'denunciar_comentario' comentario.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Denunciar</button>
-                        </form>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'denunciar_comentario' comentario.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Denunciar</button>
+                            </form>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
             {% if user.is_authenticated %}
                 <div class="comentarios-form">
                     <h4>Deixe seu comentário</h4>
-                    <form action="" method="POST"
-                    ">
+                    <form action="" method="POST">
                     {% csrf_token %}
-                    <textarea name="texto" rows="4" placeholder="Seu comentário..." style="width: 100%"></textarea>
+                    <textarea name="texto" rows="4" placeholder="Seu comentário..." style="width: 100%" required></textarea>
                     <button type="submit" class="btn">Enviar</button>
                     </form>
                 </div>

@@ -32,6 +32,7 @@ class HomeView(View):
             'lista_receitas': lista_receitas,
             'lista_ingredientes': lista_ingredientes,
             'username': user,
+            'usuario_id':  Usuario.objects.filter(username=user).first().id if user else None,
             'is_admin': is_admin,
         }
         return render(self.request, "index.html", context)
@@ -135,8 +136,6 @@ class ReceitaView(View):
             "is_admin": is_admin
         }
         return render(self.request, "receitas.html", context)
-
-
     def post(self, request, **kwargs):
         if not request.user.is_authenticated:
             messages.error(request, 'Você precisa estar logado para comentar.')
@@ -169,6 +168,26 @@ class ReceitaView(View):
             messages.error(request, 'O texto do comentário não pode estar vazio.')
         return render(self.request, "receitas.html", context)
         #return redirect('receita', receita_id=receita.id)
+
+class MinhasReceitasView(View):
+    def get(self, request, **kwargs):
+        user = self.request.session.get('username')
+        if user:
+            is_admin = Usuario.objects.filter(username=user).first().is_admin
+        else:
+            is_admin = False
+        lista_receitas = Receita.objects.filter(status=True, usuario=Usuario.objects.filter(username=user).first()).all()[:6]
+        lista_ingredientes = Ingrediente.objects.order_by('nome').all()
+        context = {
+            'lista_receitas': lista_receitas,
+            'lista_ingredientes': lista_ingredientes,
+            'username': user,
+            'usuario_id': Usuario.objects.filter(username=user).first().id if user else None,
+            'is_admin': is_admin,
+        }
+        return render(self.request, "index.html", context)
+
+
 
 class UpdateReceitaView(View):
     def get(self, request, **kwargs):
