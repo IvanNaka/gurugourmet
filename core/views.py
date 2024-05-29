@@ -89,6 +89,7 @@ class CadastroView(View):
         usuarioNovo.senha = senha
         usuarioNovo.email = email
         usuarioNovo.userDjango = userDjango
+        usuarioNovo.status = True
         request.session['username'] = username
         usuarioNovo.save()
         if not userDjango and not usuarioNovo:
@@ -359,7 +360,7 @@ class DeleteUsuarioView(View):
             ban_usuario = BanUsuario()
             ban_usuario.usuario = usuario
             ban_usuario.justificativa = justificativa
-            ban_usuario.data = datetime.datetime.now()
+            ban_usuario.data = timezone.now()
             ban_usuario.status = True
             ban_usuario.save()
             usuario.save()
