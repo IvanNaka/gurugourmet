@@ -37,4 +37,5 @@ urlpatterns = [
     path('adm/delete/usuario/<int:usuario_id>', csrf_exempt(views.DeleteUsuarioView.as_view()), name='delete_usuario'),
     path('adm/delete/comentario/<int:comentario_id>', csrf_exempt(views.DeleteComentarioView.as_view()), name='delete_comentario'),
     path('logout/', csrf_exempt(views.LogoutView.as_view())),
+    path('reset/', csrf_exempt(views.MudarSenhaView.as_view())),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

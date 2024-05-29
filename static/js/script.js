@@ -145,6 +145,34 @@ function cadastro() {
     };
     xhr.send(formData);
 }
+function reset() {
+    var email = document.getElementById('email').value;
+    if (!validateEmail(email)) {
+        document.getElementById('error-message').textContent = 'Endereço de e-mail inválido';
+        return;
+    }
+    if (!validatePassword(document.getElementById('password').value)) {
+        document.getElementById('error-message').textContent = 'A senha deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial';
+        return;
+    }
+    var formData = new FormData();
+    formData.append('email', document.getElementById('email').value);
+    formData.append('password', document.getElementById('password').value);
+    formData.append('username', document.getElementById('username').value);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/reset/', true);
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Adicione o token CSRF, necessário para Django
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                location.href = '../';
+            } else {
+                document.getElementById('error-message').innerText = JSON.parse(xhr.response).error;
+            }
+        }
+    };
+    xhr.send(formData);
+}
 var toastEl = document.getElementById('successToast');
 var toast = new bootstrap.Toast(toastEl);
 

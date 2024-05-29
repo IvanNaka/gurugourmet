@@ -8,14 +8,118 @@
     <title>GuruGourmet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/styles1.css' %}"/>
+    <script src="{% static 'js/script.js' %}"></script>
+    <style>
+        button:active, button:visited {
+            color: inherit;
+        }
+
+        a {
+            text-align: center
+        }
+
+        #justificativa {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
-    <h1>Você realmente deseja apagar o comentário de {{ comentario.usuario.username }}?</h1>
-    <p>{{ comentario.texto }}</p>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn">Apagar</button>
-        <a href="/adm" class="btn">Cancelar</a>
-    </form>
+
+<!-- nav -->
+<nav class="navbar">
+    <div class="nav-center">
+        <!-- header -->
+        <div class="nav-header">
+            <a href="/.." class="nav-logo">
+                <img src="{% static 'assets/logo.svg' %}" alt="GuruGourmet">
+            </a>
+            <button type="button" class="btn nav-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <!-- links -->
+        <div class="nav-links">
+            <a href="/.." class="nav-link" id="gg">GuruGourmet</a>
+            <div class="nav-link register-link">
+                {% if not user.is_authenticated %}
+                <a href="/cadastro" class="btn"><i class="fa-solid fa-user-plus"></i> Registrar</a>
+                <div class="nav-link login-link">
+                    <a href="/login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+                </div>
+                {% else %}
+                <button class="btn"><a href="/receita/create" style="color: white">Nova receita</a></button>
+                {% if is_criador %}
+                <button class="btn"><a href="/receita/edit/{{ receita.id }}" style="color: white">Editar
+                    receita</a></button>
+                {% endif %}
+                <a><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                <button class="btn"><a href="/logout" style="color: white">Logout</a></button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- final nav -->
+<!-- main -->
+
+
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    {% if not messages %}
+    <h1>Você realmente deseja banir este comentario?</h1>
+    <h5>{{comentario.usuario.username}}</h5>
+    <h4>{{comentario.texto}}</h4>
+    <div>
+        <form action="" method="POST" style="display: inline">
+            {% csrf_token %}
+            <label for="justificativa">Justificativa:</label>
+            <textarea id="justificativa" name="justificativa" rows="4" cols="50" required></textarea>
+            <div>
+                <button type="submit" class="btn" style="width: 300px; height: 75%; font-size: 38px;"><a>Banir</a>
+                </button>
+                <button class="btn" style="width: 300px; height: 75%; font-size: 38px; background: red"><a href="/adm"
+                                                                                                           style="color: white">Cancelar</a>
+                </button>
+            </div>
+
+        </form>
+    </div>
+    {% endif %}
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div style="padding-top: 5px">
+            <h1>{{ message }}</h1>
+        </div>
+        <button class="btn" style="width: 300px; height: 75%; font-size: 38px; "><a href="/adm" style="color: white">Voltar</a>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+    </div>
+</body>
+<!-- final container receitas -->
+</main>
+<!-- final main -->
+<!-- footer -->
+<footer class="content-footer">
+    <p>
+        &copy; <span id="data"></span>
+        <span class="footer-logo">GuruGourmet</span>
+    </p>
+</footer>
+<!-- final footer -->
+<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

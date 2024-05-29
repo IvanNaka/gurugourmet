@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
     <script src="{% static '/js/script.js' %}"></script>
+    <style>
+        .hero-text a {
+    display: block;
+    margin-bottom: 10px;
+}
+        a {
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <!-- nav -->
@@ -43,6 +52,7 @@
                     <div id="error-message" style="color: red;"></div> <!-- Div para exibir mensagens de erro -->
                     <input type="email" id="email" placeholder="Email" required><br>
                     <input type="password" id="password" placeholder="Senha" required><br>
+                    <a href="/reset">Esqueceu sua senha?</a>
                     <button onclick="login()">Login</button>
                 </div>
             </div>

@@ -16,7 +16,7 @@ from django import forms
 from django.views.generic import TemplateView
 
 from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comentario, DenunciaComentario, BanImagem, \
-    BanUsuario
+    BanUsuario, BanComentario
 
 
 class HomeView(View):
@@ -97,12 +97,12 @@ class CadastroView(View):
         return JsonResponse({'success': True})
 class MudarSenhaView(View):
     def get(self, request, **kwargs):
-        return render(self.request, "register.html")
+        return render(self.request, "reset.html")
     def post(self, request, **kwargs):
         email = self.request.POST.get('email')
         username = self.request.POST.get('username')
-        senhaNova = self.request.POST.get('senhaNova')
-        if Usuario.objects.filter(email=email, username=username).exists():
+        senhaNova = self.request.POST.get('password')
+        if not Usuario.objects.filter(email=email, username=username).exists():
             return JsonResponse({'error': 'Usuario ou email invalido!'}, status=500)
         userDjango = User.objects.filter(username=username).first()
         userDjango.set_password(senhaNova)
@@ -274,7 +274,7 @@ class PaginaAdmView(View):
         is_admin = usuario.is_admin if usuario else False
         if is_admin:
             usuarios = Usuario.objects.all()
-            denuncias = DenunciaComentario.objects.all()  # Busca todas as denúncias
+            denuncias = DenunciaComentario.objects.filter(comentario__status=True)  # Busca todas as denúncias
             context = {
                 'username': user,
                 'is_admin': is_admin,
@@ -386,16 +386,27 @@ class DeleteComentarioView(View):
         comentario_id = kwargs.get('comentario_id')
         comentario = Comentario.objects.filter(id=comentario_id).first()
         username_usuario = self.request.user.username
+        justificativa = self.request.POST.get('justificativa')
         context = {
             "comentario_id": comentario_id,
         }
         if username_usuario:
-            is_admin = Usuario.objects.filter(username=username_usuario).first().is_admin
+            admin = Usuario.objects.filter(username=username_usuario).first()
+            is_admin = admin.is_admin
         else:
+            admin = None
             is_admin = False
         if is_admin:
-            comentario.delete()
-        messages.success(request, 'Comentário apagado com sucesso!')
+            comentario.status = False
+            banCom = BanComentario()
+            banCom.comentario = comentario
+            banCom.justificativa = justificativa
+            banCom.data = datetime.datetime.now()
+            banCom.admin = admin
+            banCom.status = True
+            banCom.save()
+            comentario.save()
+        messages.success(request, 'Comentário banido com sucesso!')
         return render(request, 'deletar_comentario.html', context)
 
 class LogoutView(View):

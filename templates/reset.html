@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GuruGourmet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
+</head>
+<body>
+<!-- nav -->
+<nav class="navbar">
+    <div class="nav-center">
+        <!-- header -->
+        <div class="nav-header">
+            <a href="../" class="nav-logo">
+                <img src="{% static 'assets/logo.svg'%}" alt="GuruGourmet">
+            </a>
+            <button type="button" class="btn nav-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <!-- links -->
+        <div class="nav-links">
+            <a href="../" class="nav-link" id="gg">GuruGourmet</a>
+            <div class="nav-link login-link">
+                <a href="./login" class="btn"><i class="fa-solid fa-user"></i> Login</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- final nav -->
+<!-- main -->
+<main class="content">
+    <!-- header -->
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h2>Cadastro</h2>
+                <div id="error-message" style="color: red;"></div> <!-- Div para exibir mensagens de erro -->
+                <input type="username" id="username" placeholder="Nome de usuário" required><br>
+                <input type="email" id="email" placeholder="Email" required><br>
+                <input type="password" id="password" placeholder="Senha" required><br>
+                <button onclick="reset()">Alterar Senha</button>
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'success' %}
+                <div style="padding-top: 5px">
+                    <h1>{{ message }}</h1>
+                </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+            </div>
+        </div>
+    </header>
+    <!-- final header-->
+    <!-- footer -->
+    <footer class="content-footer">
+        <p>
+            &copy; <span id="data"></span>
+            <span class="footer-logo">GuruGourmet</span>
+        </p>
+    </footer>
+    <!-- final footer -->
+    <script src="{% static '/js/script.js' %}"></script>
+</body>
+</html>
