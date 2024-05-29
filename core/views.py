@@ -60,16 +60,16 @@ class LoginView(View):
     def post(self, request, **kwargs):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
-        usuario = Usuario.objects.filter(email=email, senha=senha, status=True).first()
+        usuario = Usuario.objects.filter(email=email, status=True).first()
         if usuario:
-            user = authenticate(request, username=usuario.email, password=senha)
+            user = authenticate(request, username=usuario.username, password=senha)
             is_admin = usuario.is_admin
             if user:
                 login(request, user)
                 request.session['username'] = usuario.username
                 return JsonResponse({'success': True, 'admin': is_admin})
             else:
-                return JsonResponse({'error': 'Usuário ou senha inválido!'}, status=401)
+                return JsonResponse({'error': 'Email ou senha inválidos!'}, status=401)
 
         return JsonResponse({'error': 'Usuário não encontrado!'}, status=404)
 
@@ -81,12 +81,15 @@ class CadastroView(View):
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
         if Usuario.objects.filter(email=email, status= True).exists():
-            return JsonResponse({'error': 'Usuario ou senha invalido!'}, status=500)
-        userDjango = User.objects.create_user(username, email, senha)
+            return JsonResponse({'error': 'Usuario ou email já utilizados!'}, status=500)
+        try:
+
+            userDjango = User.objects.create_user(username, email, senha)
+        except:
+            return JsonResponse({'error': 'Usuario já existente!'}, status=500)
         login(request, userDjango)
         usuarioNovo = Usuario()
         usuarioNovo.username = username
-        usuarioNovo.senha = senha
         usuarioNovo.email = email
         usuarioNovo.userDjango = userDjango
         usuarioNovo.status = True
@@ -107,6 +110,7 @@ class MudarSenhaView(View):
             return JsonResponse({'error': 'Usuario ou email invalido!'}, status=500)
         userDjango = User.objects.filter(username=username).first()
         userDjango.set_password(senhaNova)
+        userDjango.save()
         login(request, userDjango)
         return JsonResponse({'success': True})
 
@@ -274,7 +278,7 @@ class PaginaAdmView(View):
         usuario = Usuario.objects.filter(username=user).first()
         is_admin = usuario.is_admin if usuario else False
         if is_admin:
-            usuarios = Usuario.objects.all()
+            usuarios = Usuario.objects.filter(status=True).order_by('username')
             denuncias = DenunciaComentario.objects.filter(comentario__status=True)  # Busca todas as denúncias
             context = {
                 'username': user,
@@ -321,6 +325,7 @@ class ConfirmarDeleteView(View):
         receita_id = kwargs.get('receita_id')
         if is_criador or is_admin:
             DenunciaComentario.objects.filter(comentario__receita=receita_id).delete()
+            BanComentario.objects.filter(comentario__receita=receita_id).delete()
             Comentario.objects.filter(receita_id=receita_id).delete()
             IngredienteReceita.objects.filter(receita_id=receita_id).delete()
             Receita.objects.filter(id=receita_id).delete()
