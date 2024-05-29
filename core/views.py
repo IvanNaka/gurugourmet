@@ -192,6 +192,8 @@ class MinhasReceitasView(View):
 class UpdateReceitaView(View):
     def get(self, request, **kwargs):
         receita_id = kwargs.get('receita_id')
+        if not self.request.user.is_authenticated:
+            return redirect('/login')
         receita = Receita.objects.filter(id=receita_id).first()
         listaIngredientes = list(IngredienteReceita.objects.filter(receita_id=receita_id))
         context = {"receita": receita, "listaIngredientes": listaIngredientes}
@@ -237,6 +239,8 @@ class UpdateReceitaView(View):
 
 class CreateReceitaView(View):
     def get(self, request, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('/login')
         return render(self.request, "criar_receita.html")
 
     def post(self, request, **kwargs):
@@ -275,7 +279,7 @@ class CreateReceitaView(View):
 class DenunciarComentarioView(View):
     def get(self, request, **kwargs):
         return render(self.request, "denunciar.html")
-    @method_decorator(login_required)
+
     def post(self, request, comentario_id):
         comentario = get_object_or_404(Comentario, id=comentario_id)
         usuario = request.user
@@ -291,7 +295,7 @@ class DenunciarComentarioView(View):
 
 
 class PaginaAdmView(View):
-    @method_decorator(login_required)
+
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
         usuario = Usuario.objects.filter(username=user).first()
@@ -307,8 +311,7 @@ class PaginaAdmView(View):
             }
             return render(self.request, 'pagina_adm.html', context)
         else:
-            return render(request, 'index.html')
-
+            return redirect('/')
 
 class ConfirmarDeleteView(View):
     def get(self, request, **kwargs):
