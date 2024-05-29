@@ -196,15 +196,15 @@ window.onload = function() {
                             <form id="addIngredienteForm">
                             <div class="inputBox">
                                 <label for="novoIngrediente">Novo Ingrediente:</label>
-                                <input type="text" id="novoIngrediente" name="novoIngrediente" class="inputUser" placeholder="Ingrediente">
+                                <input type="text" id="novoIngrediente" name="novoIngrediente" class="inputUser" placeholder="Ingrediente" required>
                             </div><br>
                             <div class="inputBox">
                                 <label for="quantidade">Quantidade:</label>
-                                <input type="number" id="quantidade" name="quantidade" class="inputUser" placeholder="Quantidade" step="0.01">
+                                <input type="number" id="quantidade" name="quantidade" class="inputUser" placeholder="Quantidade" step="0.01" required>
                             </div><br>
                             <div class="inputBox">
                                 <label for="unidadeMedida">Unidade de Medida:</label>
-                                <input type="text" id="unidadeMedida" name="unidadeMedida" class="inputUser" placeholder="Medida">
+                                <input type="text" id="unidadeMedida" name="unidadeMedida" class="inputUser" placeholder="Medida" required>
                             </div>
                                 <button type="button" id="addIngrediente">Add Ingrediente</button><br><br>
                             </form>
@@ -220,12 +220,12 @@ window.onload = function() {
                                 <button type="button" class="btn" id="removeIngrediente">Remover</button><br><br>
                             <div class="inputBox">
                                 <label for="titulo">Título:</label><br>
-                                <input type="text" id="titulo" name="titulo" value="{{ receita.titulo }}" class="inputUser"><br><br>
-                                <label for="tempo_preparo">Tempo de Preparo:</label><br>
-                                <input type="text" id="tempo_preparo" name="tempo_preparo" class="inputUser" value="{{ receita.tempo_preparo }}"><br><br>
+                                <input type="text" id="titulo" name="titulo" value="{{ receita.titulo }}" class="inputUser" required><br><br>
+                                <label for="tempo_preparo" >Tempo de Preparo:</label><br>
+                                <input type="text" id="tempo_preparo" name="tempo_preparo" class="inputUser" value="{{ receita.tempo_preparo }}" required><br><br>
                                 <label for="texto">Texto:</label>
                                 <br>
-                                <textarea id="texto" name="texto" > {{ receita.texto }}</textarea><br><br>
+                                <textarea id="texto" name="texto" required> {{ receita.texto }}</textarea><br><br>
                                     <div class="inputBox">
                                         <label for="image">Upload Imagem Principal:</label>
                                         <input type="file" id="image" name="image" accept="image/*" class="inputUser">

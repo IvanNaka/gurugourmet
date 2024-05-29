@@ -27,6 +27,7 @@ urlpatterns = [
     path('login/', csrf_exempt(views.LoginView.as_view()), name='/login/'),
     path('cadastro/', csrf_exempt(views.CadastroView.as_view())),
     path('receita/<int:receita_id>', csrf_exempt(views.ReceitaView.as_view())),
+    path('receita/usuario/<int:usuario_id>/', csrf_exempt(views.MinhasReceitasView.as_view())),
     path('receita/edit/<int:receita_id>', csrf_exempt(views.UpdateReceitaView.as_view())),
     path('receita/create', csrf_exempt(views.CreateReceitaView.as_view())),
     path('receita/delete/<int:receita_id>', csrf_exempt(views.ConfirmarDeleteView.as_view())),
