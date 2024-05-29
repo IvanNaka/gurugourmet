@@ -60,10 +60,10 @@ class LoginView(View):
     def post(self, request, **kwargs):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
-        usuario = Usuario.objects.filter(email=email, senha=senha).first()
+        usuario = Usuario.objects.filter(email=email, senha=senha, status=True).first()
         if usuario:
             user = authenticate(request, username=usuario.email, password=senha)
-            is_admin = authenticate(request, is_admin=usuario.is_admin, null=True)
+            is_admin = usuario.is_admin
             if user:
                 login(request, user)
                 request.session['username'] = usuario.username
@@ -80,7 +80,7 @@ class CadastroView(View):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
-        if Usuario.objects.filter(email=email).exists():
+        if Usuario.objects.filter(email=email, status= True).exists():
             return JsonResponse({'error': 'Usuario ou senha invalido!'}, status=500)
         userDjango = User.objects.create_user(username, email, senha)
         login(request, userDjango)
@@ -346,6 +346,7 @@ class DeleteUsuarioView(View):
         usuario_id = kwargs.get('usuario_id')
         usuario = Usuario.objects.filter(id=usuario_id).first()
         username_usuario = self.request.user.username
+        justificativa = self.request.POST.get('justificativa')
         context = {
             "usuario_id": usuario_id,
         }
@@ -354,8 +355,15 @@ class DeleteUsuarioView(View):
         else:
             is_admin = False
         if is_admin:
-            usuario.delete()
-        messages.success(request, 'Usuario apagado com sucesso!')
+            usuario.status = False
+            ban_usuario = BanUsuario()
+            ban_usuario.usuario = usuario
+            ban_usuario.justificativa = justificativa
+            ban_usuario.data = datetime.datetime.now()
+            ban_usuario.status = True
+            ban_usuario.save()
+            usuario.save()
+        messages.success(request, 'Usuario banido com sucesso!')
         return render(request, 'deletar_usuario.html', context)
 
 class DeleteComentarioView(View):

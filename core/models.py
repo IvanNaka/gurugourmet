@@ -75,7 +75,6 @@ class BanImagem(models.Model):
 class BanUsuario(models.Model):
     status = models.BooleanField()
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
-    #admin = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     data = models.DateTimeField()
     justificativa = models.TextField()
 
