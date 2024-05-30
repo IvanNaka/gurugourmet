@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.utils import timezone
 from django.views import View
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse
@@ -22,6 +23,7 @@ from core.models import Usuario, Receita, Ingrediente, IngredienteReceita, Comen
 class HomeView(View):
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
+        data_nascimento = Usuario.objects.filter(username=user).first().data_nascimento if user else None
         if user:
             is_admin = Usuario.objects.filter(username=user).first().is_admin
         else:
@@ -34,6 +36,7 @@ class HomeView(View):
             'username': user,
             'usuario_id':  Usuario.objects.filter(username=user).first().id if user else None,
             'is_admin': is_admin,
+            'data_nascimento': data_nascimento
         }
         return render(self.request, "index.html", context)
 
@@ -81,11 +84,12 @@ class CadastroView(View):
         email = self.request.POST.get('email')
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
+        data_nascimento = self.request.POST.get('data_nascimento')
         if Usuario.objects.filter(email=email, status= True).exists():
             return JsonResponse({'error': 'Usuario ou email já utilizados!'}, status=500)
         try:
 
-            userDjango = User.objects.create_user(username, email, senha)
+            userDjango = User.objects.create_user(username, email, senha, data_nascimento)
         except:
             return JsonResponse({'error': 'Usuario já existente!'}, status=500)
         login(request, userDjango)
@@ -94,6 +98,7 @@ class CadastroView(View):
         usuarioNovo.email = email
         usuarioNovo.userDjango = userDjango
         usuarioNovo.status = True
+        usuarioNovo.data_nascimento = data_nascimento
         request.session['username'] = username
         usuarioNovo.save()
         if not userDjango and not usuarioNovo:

@@ -9,6 +9,7 @@ class Usuario(models.Model):
     userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     is_admin = models.BooleanField(default=False)
     status = models.BooleanField(default=False)
+    data_nascimento = models.DateField()
 
 class Endereco(models.Model):
     rua = models.CharField(max_length=255)

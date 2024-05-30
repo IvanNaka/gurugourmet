@@ -131,6 +131,7 @@ function cadastro() {
     formData.append('email', document.getElementById('email').value);
     formData.append('password', document.getElementById('password').value);
     formData.append('username', document.getElementById('username').value);
+    formData.append('data_nascimento', document.getElementById('data_nascimento').value);
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/cadastro/', true);
     xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Adicione o token CSRF, necessário para Django
@@ -145,6 +146,8 @@ function cadastro() {
     };
     xhr.send(formData);
 }
+document.getElementById('cadastrar').addEventListener('click', cadastro);
+
 function reset() {
     var email = document.getElementById('email').value;
     if (!validateEmail(email)) {
@@ -319,5 +322,8 @@ function submitForm(event) {
         console.log("Formulário válido. Enviando dados...");
     }
 }
+
+
+
 
 
