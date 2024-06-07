@@ -129,8 +129,10 @@ function cadastro() {
     }
     var formData = new FormData();
     formData.append('email', document.getElementById('email').value);
+    formData.append('instagram', document.getElementById('instagram').value);
     formData.append('password', document.getElementById('password').value);
     formData.append('username', document.getElementById('username').value);
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/cadastro/', true);
     xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Adicione o token CSRF, necessário para Django
@@ -157,8 +159,10 @@ function reset() {
     }
     var formData = new FormData();
     formData.append('email', document.getElementById('email').value);
+    formData.append('instagram', document.getElementById('instagram').value);
     formData.append('password', document.getElementById('password').value);
     formData.append('username', document.getElementById('username').value);
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/reset/', true);
     xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Adicione o token CSRF, necessário para Django

@@ -79,8 +79,10 @@ class CadastroView(View):
         return render(self.request, "register.html")
     def post(self, request, **kwargs):
         email = self.request.POST.get('email')
+        instagram = self.request.POST.get('instagram')
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
+
         if Usuario.objects.filter(email=email, status= True).exists():
             return JsonResponse({'error': 'Usuario ou email já utilizados!'}, status=500)
         try:
@@ -92,8 +94,10 @@ class CadastroView(View):
         usuarioNovo = Usuario()
         usuarioNovo.username = username
         usuarioNovo.email = email
+        usuarioNovo.instagram = instagram
         usuarioNovo.userDjango = userDjango
         usuarioNovo.status = True
+        usuarioNovo.senha = senha
         request.session['username'] = username
         usuarioNovo.save()
         if not userDjango and not usuarioNovo:
