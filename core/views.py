@@ -79,7 +79,7 @@ class CadastroView(View):
         return render(self.request, "register.html")
     def post(self, request, **kwargs):
         email = self.request.POST.get('email')
-        instagram = self.request.POST.get('instagram')
+        texto = self.request.POST.get('texto')
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
         date = self.request.POST.get('date')
@@ -95,7 +95,7 @@ class CadastroView(View):
         usuarioNovo = Usuario()
         usuarioNovo.username = username
         usuarioNovo.email = email
-        usuarioNovo.instagram = instagram
+        usuarioNovo.texto = texto
         usuarioNovo.dataAniversario = date
         usuarioNovo.userDjango = userDjango
         usuarioNovo.status = True

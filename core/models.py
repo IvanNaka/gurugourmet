@@ -6,7 +6,7 @@ from django.db import models
 class Usuario(models.Model):
     username = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
-    instagram = models.CharField(max_length=128, null=True)
+    texto = models.CharField(max_length=128, null=True)
     userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     is_admin = models.BooleanField(default=False)
     status = models.BooleanField(default=False)
