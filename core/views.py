@@ -82,6 +82,7 @@ class CadastroView(View):
         instagram = self.request.POST.get('instagram')
         senha = self.request.POST.get('password')
         username = self.request.POST.get('username')
+        date = self.request.POST.get('date')
 
         if Usuario.objects.filter(email=email, status= True).exists():
             return JsonResponse({'error': 'Usuario ou email já utilizados!'}, status=500)
@@ -95,6 +96,7 @@ class CadastroView(View):
         usuarioNovo.username = username
         usuarioNovo.email = email
         usuarioNovo.instagram = instagram
+        usuarioNovo.dataAniversario = date
         usuarioNovo.userDjango = userDjango
         usuarioNovo.status = True
         usuarioNovo.senha = senha

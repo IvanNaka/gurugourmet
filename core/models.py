@@ -11,6 +11,7 @@ class Usuario(models.Model):
     is_admin = models.BooleanField(default=False)
     status = models.BooleanField(default=False)
     senha = models.CharField(max_length=128)
+    dataAniversario = models.DateTimeField(null=True)
 
 class Endereco(models.Model):
     rua = models.CharField(max_length=255)

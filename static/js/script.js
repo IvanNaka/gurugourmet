@@ -130,6 +130,7 @@ function cadastro() {
     var formData = new FormData();
     formData.append('email', document.getElementById('email').value);
     formData.append('instagram', document.getElementById('instagram').value);
+    formData.append('date', document.getElementById('date').value);
     formData.append('password', document.getElementById('password').value);
     formData.append('username', document.getElementById('username').value);
 
