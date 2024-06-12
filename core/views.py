@@ -96,7 +96,7 @@ class CadastroView(View):
         usuarioNovo.username = username
         usuarioNovo.email = email
         usuarioNovo.instagram = instagram
-        usuarioNovo.dataAniversario = date
+        usuarioNovo.data = date
         usuarioNovo.userDjango = userDjango
         usuarioNovo.status = True
         usuarioNovo.senha = senha
