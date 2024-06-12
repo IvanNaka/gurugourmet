@@ -6,12 +6,13 @@ from django.db import models
 class Usuario(models.Model):
     username = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
-    texto = models.CharField(max_length=128, null=True)
+    instagram = models.CharField(max_length=128, null=True)
+    data_aniversario = models.DateTimeField(null=True)
     userDjango = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     is_admin = models.BooleanField(default=False)
     status = models.BooleanField(default=False)
     senha = models.CharField(max_length=128)
-    dataAniversario = models.DateTimeField(max_length=128, null=True)
+
 
 class Endereco(models.Model):
     rua = models.CharField(max_length=255)
