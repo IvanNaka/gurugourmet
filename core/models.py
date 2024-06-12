@@ -27,10 +27,13 @@ class Receita(models.Model):
     texto = models.TextField()
     titulo = models.CharField(max_length=255, default='')
     data_criacao = models.DateTimeField()
+    origem = models.CharField(max_length=255, null=True)
     status = models.BooleanField()
     tempo_preparo = models.CharField(max_length=255, null=True)
     imagem_principal = models.FileField(max_length=255, null=True)
+    custo_medio = models.CharField(max_length=255, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+
 
 class Ingrediente(models.Model):
     nome = models.CharField(max_length=255)

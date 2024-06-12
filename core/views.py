@@ -23,7 +23,10 @@ class HomeView(View):
     def get(self, request, **kwargs):
         user = self.request.session.get('username')
         if user:
+            usuario = Usuario.objects.filter(username=user).first()
             is_admin = Usuario.objects.filter(username=user).first().is_admin
+            instagram = usuario.instagram
+            data = usuario.data
         else:
             is_admin = False
         lista_receitas = Receita.objects.filter(status=True).all()[:6]
@@ -34,6 +37,8 @@ class HomeView(View):
             'username': user,
             'usuario_id':  Usuario.objects.filter(username=user).first().id if user else None,
             'is_admin': is_admin,
+            'instagram': instagram,
+            'data': data,
         }
         return render(self.request, "index.html", context)
 
@@ -253,6 +258,8 @@ class CreateReceitaView(View):
         texto_novo = self.request.POST.get("texto")
         tempo_preparo_novo = self.request.POST.get("tempo_preparo")
         titulo_novo = self.request.POST.get("titulo")
+        custo_medio = self.request.POST.get("custo_medio")
+        origem = self.request.POST.get("origem")
         lista_ingredientes = self.request.POST.getlist("ingredientes")
         receita = Receita()
         if 'image' in self.request.FILES:
@@ -267,6 +274,8 @@ class CreateReceitaView(View):
         receita.tempo_preparo = tempo_preparo_novo
         receita.titulo = titulo_novo
         receita.usuario_id = titulo_novo
+        receita.custo_medio = custo_medio
+        receita.origem = origem
         receita.status = True
         receita.data_criacao = datetime.datetime.now()
         receita.usuario_id = Usuario.objects.filter(email=self.request.user.email).first().id
