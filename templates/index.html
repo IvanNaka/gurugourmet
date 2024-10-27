@@ -37,9 +37,9 @@
                     <a href="/login" class="btn" id="login-button"><i class="fa-solid fa-user"></i> Login</a>
                 </div>
                 {% else %}
-                <button class="btn" style="margin-right: 10px;"><a href="/receita/create" style="color: white">Nova
+                <button class="btn" style="margin-right: 10px;" id="button-criar"><a href="/receita/create" style="color: white">Nova
                     receita</a></button>
-                <button class="btn" style="margin-right: 10px;"><a href="/receita/usuario/{{usuario_id}}" style="color: white">Minhas
+                <button class="btn" style="margin-right: 10px;"  id="button-minhas"><a href="/receita/usuario/{{usuario_id}}" style="color: white">Minhas
                     Receitas</a></button>
                 {% if is_admin %}
                 <button class="btn"><a href="/adm" style="color: white">Página ADM</a></button>
@@ -85,7 +85,7 @@
         <div class="lista-container">
             {% for receita in lista_receitas %}
             <!-- receita individual -->
-            <a href="/receita/{{ receita.id }}" class="receita">
+            <a href="/receita/{{ receita.id }}" class="receita" id="receita">
                 <img src="{{receita.imagem_principal }}" class="img receita-img" alt="">
                 <h5>{{ receita.titulo }}</h5>
                 <p>Tempo de Preparo: {{ receita.tempo_preparo }}</p>

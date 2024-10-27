@@ -106,7 +106,7 @@
               <a href="/receita/create" style="color: white">Nova receita</a>
             </button>
             {% if is_criador or is_admin %}
-            <button class="btn">
+            <button class="btn" id="button-edit">
               <a href="/receita/edit/{{ receita.id }}" style="color: white"
                 >Editar receita</a
               >
@@ -133,7 +133,7 @@
       <header class="hero">
         <div class="hero-container">
           <div class="hero-text">
-            <h4>{{ receita.titulo }}</h4>
+            <h4 id="titulo">{{ receita.titulo }}</h4>
             <img
               src="{{ receita.imagem_principal }}"
               class="img receita-img"
@@ -148,11 +148,10 @@
         <div class="card" style="width: 100%">
           <div class="card-text">
             <h4>INGREDIENTES</h4>
-            <ul>
+            <ul id="lista-ingrediente">
               {% for ingrediente in listaIngredientes %}
               <li>
-                {{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade
-                }} {{ ingrediente.unidadeMedida }}
+                {{ ingrediente.ingrediente.nome }} - {{ ingrediente.quantidade }} {{ ingrediente.unidadeMedida }}
               </li>
               {% endfor %}
             </ul>
@@ -161,7 +160,7 @@
         <div class="card" style="width: 100%">
           <div class="card-text">
             <h4>PASSOS</h4>
-            <h5>{{ receita.texto }}</h5>
+            <h5 id="texto">{{ receita.texto }}</h5>
           </div>
         </div>
       </div>
@@ -184,7 +183,7 @@
               <p style="width: 100%">
                 <strong>{{ comentario.usuario.username }}</strong> comentou:
               </p>
-              <p style="width: 100%">{{ comentario.texto }}</p>
+              <p style="width: 100%" >{{ comentario.texto }}</p>
               <p class="data">{{ comentario.data }}</p>
               {% if user.is_authenticated %}
               <form
